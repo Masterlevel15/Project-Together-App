@@ -1,9 +1,12 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import Welcome from '@/Components/Welcome.vue';
+// import Welcome from '@/Components/Welcome.vue';
+import Welcome from './Welcome.vue';
 </script>
 
 <template>
+<Welcome />
+<!--
     <AppLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -19,4 +22,5 @@ import Welcome from '@/Components/Welcome.vue';
             </div>
         </div>
     </AppLayout>
+     -->
 </template>
