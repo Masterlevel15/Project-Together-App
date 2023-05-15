@@ -15,7 +15,6 @@
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
-        <div id="app"></div>
-        @inertia
+            @inertia('./Welcome')
     </body>
 </html>
