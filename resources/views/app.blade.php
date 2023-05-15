@@ -15,6 +15,6 @@
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
-            @inertia('./Welcome')
+            @inertia('./Pages/Welcome')
     </body>
 </html>
