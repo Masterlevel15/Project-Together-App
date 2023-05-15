@@ -9,15 +9,13 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-        <script src="{{ mix('js/app.js') }}"></script>
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        @vite('resources/js/app.js')
 
         <!-- Scripts -->
         @routes
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
-        <div>test</div>
-            @inertia('./Pages/Welcome')
+        @inertia
     </body>
 </html>
