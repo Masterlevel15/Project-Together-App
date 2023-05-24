@@ -13,6 +13,7 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
+    pseudo: '',
     terms: false,
 });
 
@@ -42,6 +43,19 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="name"
+                />
+                <InputError class="mt-2" :message="form.errors.name" />
+            </div>
+
+            <div>
+                <InputLabel for="pseudo" value="Pseudo" />
+                <TextInput
+                    id="pseudo"
+                    v-model="form.pseudo"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                    autofocus
                 />
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>

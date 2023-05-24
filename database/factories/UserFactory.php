@@ -34,7 +34,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'profile_photo_path' => null,
             'current_team_id' => null,
-            'pseudo' => fake()->name(),
+            'pseudo' => fake()->name()->nullable(),
             'intro' => fake()->sentence(2),
             'description' => fake()->paragraph(2),
             'birthDate' => fake()->dateTime( 'August 12, 2010'),

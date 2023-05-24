@@ -44,6 +44,14 @@ class ActivityController extends Controller
         'activity' => $activity, 'distance' => $distance,
         ]);
     }
+
+    public function findActivitiesByCategory(int $id) {
+        $activitiesByCategory = Activity::select("*", "activities.title as activityTitle","users.name as userName", "activities.id as activityID", "users.id as userID", "users.rate as userRate", "cities.name as cityName", "users.city_id as userCityID", "activities.city_id as activityCityID", "activities.country_id as activityCountryID", "users.country_id as userCountryID", "countries.name as activityCountryName", "categories.name as activityCategoryName")
+        ->join("users", "activities.promoter_id", "=", "users.id")
+        ->join("cities", "activities.city_id", "=", "cities.id")
+        ->join("countries", "countries.id", "=", "activities.country_id")->join("categories", "categories.id", "=", "activities.category_id")->where('category_id', $id)->get();
+        return Inertia::render('Activity/ActivitiesByCategory', ['activities'=> $activitiesByCategory]);
+    }
     public function sortActivitiesWithDistances(Request $request) {
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
