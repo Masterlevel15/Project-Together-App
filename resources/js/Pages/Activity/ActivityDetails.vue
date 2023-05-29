@@ -62,6 +62,11 @@
         <svg v-for="rate in this.rates" :key="rate.id" aria-hidden="true" class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star {{rate}}</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
         <svg v-for="notRate in this.notRates" :key="notRate.id" aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
     </div>
+    <p>{{ userByActivity }} /{{ activity[0].participants_number}} participants</p>
+    <div class="flex">
+      <div style="width: 7vh; height: 7vh; 	border-radius: 9999px; background: red; position: relative; background-image: url('https://cdn.vuetifyjs.com/images/cards/docks.jpg'); background-size: cover;" class="text-after ml-6" v-for="user in activityUsers" :key="user.id">
+      </div>
+    </div>
 </template>
 
 <script>
@@ -78,6 +83,7 @@ export default {
       activity: Array,
       tests: Array,
       distance: Number,
+      activityUsers: Array,
    },
    methods: {
     getStarRating() {
@@ -133,11 +139,14 @@ export default {
     firstLetterToUppercase() {
        return this.activity[0].title.charAt(0).toUpperCase() + this.activity[0].title.slice(1);
     },
+    userByActivity(){
+      return this.activityUsers.length;
+    },
    },
    created() {
        this.getStarRating();
        console.log(`Distance: ${this.distance}`);
-       console.log(this.activity[0].date);
+       console.log(this.activityUsers);
    }
 }
 </script>

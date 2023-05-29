@@ -1,6 +1,7 @@
 <template>
 <v-container class="">
    <h1 class="text-white text-4xl my-4 font-extrabold">Together</h1>
+   
    <button class="floating-element">
       <a :href="route('activity.create')">
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-white w-8 h-8 mx-auto">
@@ -63,8 +64,8 @@
                <v-img
                   class="align-end text-white"
                   height="200"
-                  :src="image"
                   cover
+                  :src="getImage(activity.image)"
                >
                
                <div>
@@ -88,9 +89,11 @@
                </v-card-subtitle>
                <v-card-text prepend-icon="mdi-home">
                   <div>User {{activity.promoter_id}}{{activity.userName}}</div>
-                  <div>
-                     ratings
-                  </div>   
+                  <div>Ratings {{activity.userRate}}</div>
+                  <div class="flex items-center px-2">
+                     <svg v-for="rate in getStarRating(activity.userRate)" :key="rate.id" aria-hidden="true" class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star {{rate}}</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                     <svg v-for="notRate in getStarNotRating(activity.userRate)" :key="notRate.id" aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                  </div>
                   <div>{{activity.participants_number}}Participant(s){{activity.distance}} </div>
                </v-card-text>
 
@@ -188,7 +191,7 @@
   import { useCoordsStore } from "./../stores/coords"
   import { usePositionStore } from "./../stores/position"
   import { useMyStore } from './../stores/store'
-  import { computed } from "@vue/runtime-core";
+  import { computed, watch } from "@vue/runtime-core";
   import { Head, Link } from '@inertiajs/vue3';
   import { useActivitiesStore } from './../stores/activitiesStore';
   import { useLocationStore } from './../stores/locationStore';
@@ -222,7 +225,11 @@
            "July", "August", "September", "October", "November", "December"],
       activitiesSortByDistance: null,
       image: null,
-
+      rates: [],
+      notRates: [],
+      ratingActive: true,
+      StarNotRating: null,
+      sortedActivities: null,
    }),
    methods: {
       convertFormatDate(date) {
@@ -231,50 +238,69 @@
          return numericDateSplit[0][2] +' '+this.month[numericDateSplit[0][1].slice(1)] +' '+ numericDateSplit[0][0];
 
       },
-      getImage() {
-         this.activities.forEach((activity)=>{
-            if(activity.image !== null) {
-               this.image = 'https://picsum.photos/300/300';
-               console.log(activity.image);
+      getImage(image) {
+         console.log('test')
+         if(image !== null) {
+            console.log(true);
+            return 'assets/images/'+ image;
+            // console.log(activity.image);
+         }
+         else{
+            console.log(false);
+            return 'https://cdn.vuetifyjs.com/images/cards/docks.jpg';
+            // console.log(activity.image);
+         }
+      },
+      getStarRating(userRate) {
+         this.rates = [];
+         if(userRate > 0) {
+            this.ratingActive = true;
+            for(let i = 0; i < userRate; i++){
+                  this.rates.push(i);
             }
-            else{
-               this.image = 'https://cdn.vuetifyjs.com/images/cards/docks.jpg';
-               console.log(activity.image);
+         }
+         else{
+            this.rates = [];
+            for(let i = 0; i < userRate; i++){
+                  this.rates.push(i);
             }
-         })
+         }
+         return this.rates;
+         // this.getStarNotRating(userRate);
          
-      }
+      },
+      getStarNotRating(userRate) {
+         this.notRates = [];
+         if(userRate > 0){
+            this.StarNotRating = 5 - userRate;
+            for(let i = 0; i < this.StarNotRating; i++){
+                  this.notRates.push(i);
+            }
+         }
+         else{
+               this.StarNotRating = 5;
+            for(let i = 0; i < this.StarNotRating; i++){
+                  this.notRates.push(i);
+            }
+         }
+         return this.notRates;
+      },
    },
    computed: {
       sortedActivitiesByDistance() {
-      const activitiesStore = useActivitiesStore();
-      activitiesStore.fetchLocation();
-      return activitiesStore.sort;
-    },
-    sortedActivitiesByDate() {
-      const activitiesStore = useActivitiesStore();
-      return activitiesStore.sortByDate;
-    },
+         const activitiesStore = useActivitiesStore();
+         activitiesStore.fetchLocation();
+         return activitiesStore.sort;
+      },
+      sortedActivitiesByDate() {
+         const activitiesStore = useActivitiesStore();
+         return activitiesStore.sortByDate;
+      },
    },
    created() {
-      this.getImage();
-      /*const activitiesStore = useActivitiesStore();
-      activitiesStore.fetchActivities();
-      const locationStore = useLocationStore();
-      this.latitude = locationStore.coords.latitude;
-      this.longitude = locationStore.coords.longitude;*/
-
-      // const activitiesStore = useActivitiesStore();
-      // activitiesStore.fetchLocation();
-      // this.activityStoreValues = Object.values(activitiesStore);
-      
-
    },
    mounted() {
    },
-   beforeCreate() {
-      
-   }
 }
 </script>
 

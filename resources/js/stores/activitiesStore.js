@@ -25,6 +25,7 @@ export const useActivitiesStore = defineStore({
         .slice()
         .sort((a, b) => a['distance'] - b['distance']);
         console.log(this.sort);
+        return this.sort;
       },
     getActivitiesSortedByDate() {
       this.activitiesValues = Object.values(this.activities);

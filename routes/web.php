@@ -24,7 +24,8 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
         'categories' => App\Models\Category::all(),
-        'test' => App\Models\Activity::all(),'activities' => App\Models\Activity::select("*", "activities.title as activityTitle","users.name as userName", "activities.id as activityID", "users.id as userID", "cities.name as cityName", "users.city_id as userCityID", "activities.city_id as activityCityID", "activities.country_id as activityCountryID", "users.country_id as userCountryID", "countries.name as activityCountryName", "categories.name as activityCategoryName")->join("users", "activities.promoter_id", "=", "users.id")->join("cities", "activities.city_id", "=", "cities.id")->join("countries", "countries.id", "=", "activities.country_id")->join("categories", "categories.id", "=", "activities.category_id")->get()
+        'test' => App\Models\Activity::all(),
+        'activities' => App\Models\Activity::select("*", "activities.title as activityTitle","users.name as userName", "activities.id as activityID", "users.id as userID","users.rate as userRate", "cities.name as cityName", "users.city_id as userCityID", "activities.city_id as activityCityID", "activities.country_id as activityCountryID", "users.country_id as userCountryID", "countries.name as activityCountryName", "categories.name as activityCategoryName")->join("users", "activities.promoter_id", "=", "users.id")->join("cities", "activities.city_id", "=", "cities.id")->join("countries", "countries.id", "=", "activities.country_id")->join("categories", "categories.id", "=", "activities.category_id")->get()
     ]);
 })->name('home');
 
@@ -76,6 +77,8 @@ Route::middleware([
             'canRegister' => Route::has('register'),
             'laravelVersion' => Application::VERSION,
             'phpVersion' => PHP_VERSION,
+            'categories' => App\Models\Category::all(),
+            'activities' => App\Models\Activity::select("*", "activities.title as activityTitle","users.name as userName", "activities.id as activityID", "users.id as userID","users.rate as userRate", "cities.name as cityName", "users.city_id as userCityID", "activities.city_id as activityCityID", "activities.country_id as activityCountryID", "users.country_id as userCountryID", "countries.name as activityCountryName", "categories.name as activityCategoryName")->join("users", "activities.promoter_id", "=", "users.id")->join("cities", "activities.city_id", "=", "cities.id")->join("countries", "countries.id", "=", "activities.country_id")->join("categories", "categories.id", "=", "activities.category_id")->get()
         ]);
     })->name('dashboard');
 });
