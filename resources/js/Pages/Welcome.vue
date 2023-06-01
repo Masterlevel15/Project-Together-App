@@ -14,6 +14,7 @@ defineProps({
     categories: Array,
 });
 
+
 </script>
 
 <template>

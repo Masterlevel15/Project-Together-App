@@ -4,19 +4,21 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <!-- Scripts -->
+        <link href="{{ asset('build/app.css') }}" rel="stylesheet">
         @routes
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
-        <div>Test</div>
+        <div>test</div>
         @inertia
-
-        <script type="module" src="{{ vite_asset('/resources/js/app.js') }}"></script>
+        <script src="{{ asset('build/app.js') }}"></script>
     </body>
 </html>
