@@ -1,9 +1,8 @@
 <template>
-<v-container class="dark:bg-slate-500">
+<v-container class="dark:bg-slate-500 height">
     <a :href="route('home')">
         <h1 class="text-white text-4xl my-4">Together</h1>
     </a>
-    <div>{{ activities }}</div>
     <div class="mr-8">
         <Card :activities="activities" />
     </div>
@@ -26,3 +25,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.height {
+    height: 100vh;
+}
+</style>

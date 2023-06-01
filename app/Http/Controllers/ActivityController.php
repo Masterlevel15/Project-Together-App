@@ -13,8 +13,11 @@ use App\Models\Activity;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\User;
+use App\Models\UserActivity;
 use Inertia\Inertia;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Redirect;
 
 
 class ActivityController extends Controller
@@ -36,14 +39,22 @@ class ActivityController extends Controller
         $activityUsers = User::select("*")
         ->join("users_has_activities", "users_has_activities.user_id", "=", "users.id")
         ->where("users_has_activities.activity_id", "=", $id)->get();
-        $activity = Activity::select("*", "activities.title as activityTitle","users.name as userName", "activities.id as activityID", "users.id as userID", "users.rate as userRate", "cities.name as cityName", "users.city_id as userCityID", "activities.city_id as activityCityID", "activities.country_id as activityCountryID", "users.country_id as userCountryID", "countries.name as activityCountryName", "categories.name as activityCategoryName", "users_has_activities.user_id as activityUserId")
+        if($activityUsers !== []){
+            $activity = Activity::select("*", "activities.id as activityID", "activities.title as activityTitle","users.name as userName", "activities.id as activityID", "users.id as userID", "users.rate as userRate", "cities.name as cityName", "users.city_id as userCityID", "activities.city_id as activityCityID", "activities.country_id as activityCountryID", "users.country_id as userCountryID", "countries.name as activityCountryName", "categories.name as activityCategoryName", "categories.id as activityCategoryID", "users_has_activities.user_id as activityUserId")
+            ->join("users", "activities.promoter_id", "=", "users.id")
+            ->join("cities", "activities.city_id", "=", "cities.id")
+            ->join("countries", "countries.id", "=", "activities.country_id")->join("categories", "categories.id", "=", "activities.category_id")
+            ->join("users_has_activities", "users_has_activities.activity_id", "=", "activities.id")
+            ->where("activities.id", $id)
+            ->get();
+        }
+        $activityUsers = [];
+        $activity = Activity::select("*", "activities.id as activityID", "activities.title as activityTitle","users.name as userName", "activities.id as activityID", "users.id as userID", "users.rate as userRate", "cities.name as cityName", "users.city_id as userCityID", "activities.city_id as activityCityID", "activities.country_id as activityCountryID", "users.country_id as userCountryID", "countries.name as activityCountryName", "categories.name as activityCategoryName", "categories.id as activityCategoryID")
         ->join("users", "activities.promoter_id", "=", "users.id")
         ->join("cities", "activities.city_id", "=", "cities.id")
         ->join("countries", "countries.id", "=", "activities.country_id")->join("categories", "categories.id", "=", "activities.category_id")
-        ->join("users_has_activities", "users_has_activities.activity_id", "=", "activities.id")
         ->where("activities.id", $id)
         ->get();
-        
         return Inertia::render('Activity/ActivityDetails', [
         'activity' => $activity, 'distance' => $distance,
         'activityUsers' => $activityUsers
@@ -62,7 +73,7 @@ class ActivityController extends Controller
         $longitude = $request->input('longitude');
 
         // $activities = Activity::all()->toArray();
-        $this->activities = Activity::select("*", "activities.title as activityTitle","users.name as userName", "activities.id as activityID", "users.id as userID", "users.rate as userRate", "cities.name as cityName", "users.city_id as userCityID", "activities.city_id as activityCityID", "activities.country_id as activityCountryID", "users.country_id as userCountryID", "countries.name as activityCountryName", "categories.name as activityCategoryName")
+        $this->activities = Activity::select("*", "activities.id as activityID", "activities.title as activityTitle","users.name as userName", "activities.id as activityID", "users.id as userID", "users.rate as userRate", "cities.name as cityName", "users.city_id as userCityID", "activities.city_id as activityCityID", "activities.country_id as activityCountryID", "users.country_id as userCountryID", "countries.name as activityCountryName", "categories.id as activityCategoryID", "categories.name as activityCategoryName")
         ->join("users", "activities.promoter_id", "=", "users.id")
         ->join("cities", "activities.city_id", "=", "cities.id")
         ->join("countries", "countries.id", "=", "activities.country_id")->join("categories", "categories.id", "=", "activities.category_id")->get()
@@ -168,6 +179,10 @@ class ActivityController extends Controller
         */
     }
     public function store(Request $request) {
+        // dd($request->file('file')->getClientOriginalExtension());
+        /*return response()->json([
+            'redirect' => route('home')
+        ]);*/
         
         //INSERT DATABASE
         $userId = User::select('id')->inRandomOrder()->first()->id;
@@ -270,8 +285,26 @@ class ActivityController extends Controller
 
             $activity->image =  $imageName;
         }
+        // Asscocier des users à l'activité créée
+        $userActivity = new UserActivity;
+        $usersTableLength = User::count();
+        $usersID = User::select("id")->get()->toArray();
+        $longueur = mt_rand(1, $usersTableLength);
+        $usersIDArray = [];
+        foreach($usersID as $userID) {
+            array_push($usersIDArray,  $userID['id']);
+        }
+        // array_push( $array,  $usersID[$i]['id']);
+        for($i = 0; $i < $longueur; $i++) {
+            $userID = mt_rand(1, $usersTableLength - 1);
+            $userActivity->user_id = $usersIDArray[$userID];
+        }
+        
+        dd($userActivity);
         //$activity->save();
-
-         return redirect()->route('home');
+        $userActivity->activity_id = $activity->id;
+         // $userActivity->save();
+        // return Redirect::route('home', [], 302, ['X-Inertia' => 'true', 'preserveState' => true]);
+        //return to_route('home');
     }
 }

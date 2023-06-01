@@ -1,44 +1,44 @@
 <template>
 	<!-- Bandelette avec les boutons -->
-	<!-- Bandelette avec les boutons -->
-	<nav>
+  <!-- Bandelette avec les boutons -->
+  <nav>
     <button>
-		<a :href="route('home')">
+    <a :href="route('home')">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
         2<path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
     </a>
     </button>
-		<button>
+    <button>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-black mx-auto">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
             </svg>
         </button>
-		<button>
+    <button>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-black mx-auto">
             <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
             </svg>
         </button>
-	</nav>
+  </nav>
 
-	<!-- Lien autour de l'image avec le titre de l'activité -->
-		<header>
-			<img src="https://picsum.photos/500/500" alt="Image de l'activité">
-			<h1 class="titre">{{ firstLetterToUppercase }}</h1>
-			<div class="vignette">
-				<div class="vignette-content">
-					<p>{{ activity[0].cityName }}</p>
-					<p> {{ formattedDistance }} Km</p>
-				</div>
-			</div>
-		</header>
+  <!-- Lien autour de l'image avec le titre de l'activité -->
+    <header>
+      <img :src="getImage(activity[0].image)" alt="Image de l'activité">
+      <h1 class="titre">{{ firstLetterToUppercase }}</h1>
+      <div class="vignette">
+        <div class="vignette-content">
+          <p>{{ activity[0].cityName }}</p>
+          <p> {{ formattedDistance }} Km</p>
+        </div>
+      </div>
+    </header>
     <!-- Bandelette avec la date et le nom de la catégorie -->
-	    <div class="bandelette">
-		    <p> {{ convertFormatDate(activity[0].date) }}</p>
-		    <div class="vignette-cat">
-			    <p>{{ activity[0].activityCategoryName }}</p>
-		    </div>
-	    </div>
+      <div class="bandelette">
+        <p> {{ convertFormatDate(activity[0].date) }}</p>
+        <div class="vignette-cat">
+          <p>{{ activity[0].activityCategoryName }}</p>
+        </div>
+      </div>
         <section class="activity-section">
             <h1 class="activity-title">{{ firstLetterToUppercase }}</h1>
             <p class="activity-date">{{ convertFormatDate(activity[0].date) }}, à {{ convertDateTime(activity[0].date) }}</p>
@@ -55,16 +55,16 @@
              </div>
         </section>
         <div class="px-4">Organisé par</div>
-        <div style="width: 7vh; height: 7vh; 	border-radius: 9999px; background: red; position: relative; background-image: url('https://cdn.vuetifyjs.com/images/cards/docks.jpg'); background-size: cover;" class="text-after ml-6">
+        <div style="width: 7vh; height: 7vh;  border-radius: 9999px; background: red; position: relative; background-image: url('https://cdn.vuetifyjs.com/images/cards/docks.jpg'); background-size: cover;" class="text-after ml-6">
       </div>
       <div class="px-2">{{ activity[0].userName }}</div>
       <div class="flex items-center px-2">
-        <svg v-for="rate in this.rates" :key="rate.id" aria-hidden="true" class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star {{rate}}</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-        <svg v-for="notRate in this.notRates" :key="notRate.id" aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+        <svg v-for="rate in getStarRating(activity[0].userRate)" :key="rate.id" aria-hidden="true" class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star {{rate}}</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+        <svg v-for="notRate in getStarNotRating(activity[0].userRate)" :key="notRate.id" aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
     </div>
     <p>{{ userByActivity }} /{{ activity[0].participants_number}} participants</p>
-    <div class="flex">
-      <div style="width: 7vh; height: 7vh; 	border-radius: 9999px; background: red; position: relative; background-image: url('https://cdn.vuetifyjs.com/images/cards/docks.jpg'); background-size: cover;" class="text-after ml-6" v-for="user in activityUsers" :key="user.id">
+    <div class="flex" v-if="activityUsersExist">
+      <div style="width: 7vh; height: 7vh;  border-radius: 9999px; background: red; position: relative; background-image: url('https://cdn.vuetifyjs.com/images/cards/docks.jpg'); background-size: cover;" class="text-after ml-6" v-for="user in activityUsers" :key="user.id">
       </div>
     </div>
 </template>
@@ -78,6 +78,7 @@ export default {
       StarNotRating: null,
       month: ["January", "February", "March", "April", "May", "June", 
            "July", "August", "September", "October", "November", "December"],
+      activityUsersExist: false,
    }),
     props:{
       activity: Array,
@@ -86,9 +87,57 @@ export default {
       activityUsers: Array,
    },
    methods: {
+     getStarRating(userRate) {
+         // Récupère les étoiles de notation en fonction de la note de l'utilisateur
+         this.rates = [];
+         if(userRate > 0) {
+            this.ratingActive = true;
+            for(let i = 0; i < userRate; i++){
+                  this.rates.push(i);
+            }
+         }
+         else{
+            this.rates = [];
+            for(let i = 0; i < userRate; i++){
+                  this.rates.push(i);
+            }
+         }
+         return this.rates;
+         // this.getStarNotRating(userRate);
+         
+      },
+      getStarNotRating(userRate) {
+         // Récupère les étoiles non notées en fonction de la note de l'utilisateur
+         this.notRates = [];
+         if(userRate > 0){
+            this.StarNotRating = 5 - userRate;
+            for(let i = 0; i < this.StarNotRating; i++){
+                  this.notRates.push(i);
+            }
+         }
+         else{
+               this.StarNotRating = 5;
+            for(let i = 0; i < this.StarNotRating; i++){
+                  this.notRates.push(i);
+            }
+         }
+         return this.notRates;
+      },
+      getImage(image) {
+         // Récupère l'URL de l'image en fonction du paramètre 'image'. Si la valeur image n'est pas null dans la db alors on charge cette image.
+         if(image !== null) {
+            return '/assets/images/'+ image;
+            // console.log(activity.image);
+         }
+         else{
+            return 'https://cdn.vuetifyjs.com/images/cards/docks.jpg';
+            // console.log(activity.image);
+         }
+      },
+    /*
     getStarRating() {
-      
-      if(this.activity[0].userRate > 0) {
+      this.rates = [];
+      if(this.activity[0].userRate > 0 && this.activity[0].userRate !== null) {
         this.ratingActive = true;
         for(let i = 0; i < this.activity[0].userRate; i++){
             this.rates.push(i);
@@ -103,19 +152,22 @@ export default {
       this.getStarNotRating();
     },
     getStarNotRating() {
-        if(this.activity[0].userRate > 0){
-           this.StarNotRating = 5 - this.activity[0].userRate;
-          for(let i = 0; i < this.StarNotRating; i++){
-            this.notRates.push(i);
-          }
+      this.notRates = [];
+      if(this.activity[0].userRate > 0 && this.activity[0].userRate !== null){
+          this.StarNotRating = 5 - this.activity[0].userRate;
+        for(let i = 0; i < this.StarNotRating; i++){
+          this.notRates.push(i);
         }
-        else{
-          this.StarNotRating = 5;
-          for(let i = 0; i < this.StarNotRating; i++){
-            this.notRates.push(i);
-          }
+      }
+      else{
+        this.StarNotRating = 5;
+        for(let i = 0; i < this.StarNotRating; i++){
+          this.notRates.push(i);
         }
+      }
+      return  this.notRates;
     },
+    */
     convertFormatDate(date) {
       let numericDate = date.split(' ', 1);
       let numericDateSplit = numericDate.map(el => el.split('-', 3));
@@ -144,6 +196,9 @@ export default {
     },
    },
    created() {
+        if(this.activityUsers !== []){
+          this.activityUsersExist = true;
+        }
        this.getStarRating();
        console.log(`Distance: ${this.distance}`);
        console.log(this.activityUsers);

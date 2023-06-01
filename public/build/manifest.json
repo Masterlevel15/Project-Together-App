@@ -1,162 +1,178 @@
 {
-  "_ActionMessage-f930909e.js": {
-    "file": "assets/ActionMessage-f930909e.js",
+  "_ActionMessage-9eb27abe.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/ActionMessage-9eb27abe.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_AppLayout-6b7cb4cd.js": {
-    "file": "assets/AppLayout-6b7cb4cd.js",
+  "_AppLayout-4a6b755a.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/AppLayout-4a6b755a.js",
     "imports": [
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_DropdownLink-d7311ff8.js"
+      "_DropdownLink-ef9fb0d8.js"
     ]
   },
-  "_AuthenticationCard-7c71aefa.js": {
-    "file": "assets/AuthenticationCard-7c71aefa.js",
+  "_AuthenticationCard-9153b8fe.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/AuthenticationCard-9153b8fe.js",
     "imports": [
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js"
     ]
   },
-  "_AuthenticationCardLogo-4c2aeff0.js": {
-    "file": "assets/AuthenticationCardLogo-4c2aeff0.js",
+  "_AuthenticationCardLogo-f73993d4.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/AuthenticationCardLogo-f73993d4.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_Checkbox-dd99216d.js": {
-    "file": "assets/Checkbox-dd99216d.js",
+  "_Checkbox-904b8a55.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/Checkbox-904b8a55.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_DangerButton-b3450e25.js": {
-    "file": "assets/DangerButton-b3450e25.js",
+  "_DangerButton-77e6d62b.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/DangerButton-77e6d62b.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_DialogModal-3de9000f.js": {
-    "file": "assets/DialogModal-3de9000f.js",
+  "_DialogModal-104e56e2.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/DialogModal-104e56e2.js",
     "imports": [
-      "_SectionTitle-6c566070.js",
+      "_SectionTitle-320948ee.js",
       "resources/js/app.js"
     ]
   },
-  "_DropdownLink-d7311ff8.js": {
-    "file": "assets/DropdownLink-d7311ff8.js",
+  "_DropdownLink-ef9fb0d8.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/DropdownLink-ef9fb0d8.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_FormSection-517d6fc8.js": {
-    "file": "assets/FormSection-517d6fc8.js",
+  "_FormSection-e5a9d2e5.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/FormSection-e5a9d2e5.js",
     "imports": [
       "resources/js/app.js",
-      "_SectionTitle-6c566070.js"
+      "_SectionTitle-320948ee.js"
     ]
   },
-  "_InputLabel-2d7f9f69.js": {
-    "file": "assets/InputLabel-2d7f9f69.js",
+  "_InputLabel-f25ebf8a.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/InputLabel-f25ebf8a.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_PrimaryButton-bbf9a4fc.js": {
-    "file": "assets/PrimaryButton-bbf9a4fc.js",
+  "_PrimaryButton-de897cca.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/PrimaryButton-de897cca.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_SecondaryButton-6355143f.js": {
-    "file": "assets/SecondaryButton-6355143f.js",
+  "_SecondaryButton-eacf907f.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/SecondaryButton-eacf907f.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_SectionBorder-b17d9841.js": {
-    "file": "assets/SectionBorder-b17d9841.js",
-    "imports": [
-      "__plugin-vue_export-helper-c27b6911.js",
-      "resources/js/app.js"
-    ]
-  },
-  "_SectionTitle-6c566070.js": {
-    "file": "assets/SectionTitle-6c566070.js",
+  "_SectionBorder-bbb1a221.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/SectionBorder-bbb1a221.js",
     "imports": [
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js"
     ]
   },
-  "_TextInput-59eb2516.js": {
-    "file": "assets/TextInput-59eb2516.js",
+  "_SectionTitle-320948ee.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/SectionTitle-320948ee.js",
+    "imports": [
+      "__plugin-vue_export-helper-c27b6911.js",
+      "resources/js/app.js"
+    ]
+  },
+  "_TextInput-d208ba83.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/TextInput-d208ba83.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
   "__plugin-vue_export-helper-c27b6911.js": {
-    "file": "assets/_plugin-vue_export-helper-c27b6911.js"
+    "file": "https:/project-together-app.herokuapp.com/build/assets/_plugin-vue_export-helper-c27b6911.js"
   },
-  "_activitiesStore-b2399956.js": {
-    "file": "assets/activitiesStore-b2399956.js",
+  "_activitiesStore-b8d99cc3.js": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/activitiesStore-b8d99cc3.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
   "resources/js/Pages/API/Index.vue": {
-    "file": "assets/Index-377f8ff2.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/Index-89c4ffb1.js",
     "imports": [
       "resources/js/Pages/API/Partials/ApiTokenManager.vue",
-      "_AppLayout-6b7cb4cd.js",
+      "_AppLayout-4a6b755a.js",
       "resources/js/app.js",
-      "_ActionMessage-f930909e.js",
-      "_DialogModal-3de9000f.js",
-      "_SectionTitle-6c566070.js",
+      "_ActionMessage-9eb27abe.js",
+      "_DialogModal-104e56e2.js",
+      "_SectionTitle-320948ee.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_Checkbox-dd99216d.js",
-      "_DangerButton-b3450e25.js",
-      "_FormSection-517d6fc8.js",
-      "_TextInput-59eb2516.js",
-      "_InputLabel-2d7f9f69.js",
-      "_PrimaryButton-bbf9a4fc.js",
-      "_SecondaryButton-6355143f.js",
-      "_SectionBorder-b17d9841.js",
-      "_DropdownLink-d7311ff8.js"
+      "_Checkbox-904b8a55.js",
+      "_DangerButton-77e6d62b.js",
+      "_FormSection-e5a9d2e5.js",
+      "_TextInput-d208ba83.js",
+      "_InputLabel-f25ebf8a.js",
+      "_PrimaryButton-de897cca.js",
+      "_SecondaryButton-eacf907f.js",
+      "_SectionBorder-bbb1a221.js",
+      "_DropdownLink-ef9fb0d8.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/API/Index.vue"
   },
   "resources/js/Pages/API/Partials/ApiTokenManager.vue": {
-    "file": "assets/ApiTokenManager-9e8a2ae3.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/ApiTokenManager-7705457f.js",
     "imports": [
       "resources/js/app.js",
-      "_ActionMessage-f930909e.js",
-      "_DialogModal-3de9000f.js",
-      "_Checkbox-dd99216d.js",
-      "_DangerButton-b3450e25.js",
-      "_FormSection-517d6fc8.js",
-      "_TextInput-59eb2516.js",
-      "_InputLabel-2d7f9f69.js",
-      "_PrimaryButton-bbf9a4fc.js",
-      "_SecondaryButton-6355143f.js",
-      "_SectionBorder-b17d9841.js",
-      "_SectionTitle-6c566070.js",
+      "_ActionMessage-9eb27abe.js",
+      "_DialogModal-104e56e2.js",
+      "_Checkbox-904b8a55.js",
+      "_DangerButton-77e6d62b.js",
+      "_FormSection-e5a9d2e5.js",
+      "_TextInput-d208ba83.js",
+      "_InputLabel-f25ebf8a.js",
+      "_PrimaryButton-de897cca.js",
+      "_SecondaryButton-eacf907f.js",
+      "_SectionBorder-bbb1a221.js",
+      "_SectionTitle-320948ee.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/API/Partials/ApiTokenManager.vue"
   },
+  "resources/js/Pages/Activity/ActivitiesByCategory.css": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/ActivitiesByCategory-7fb1817a.css",
+    "src": "resources/js/Pages/Activity/ActivitiesByCategory.css"
+  },
+  "resources/js/Pages/Activity/ActivitiesByCategory.vue": {
+    "css": [
+      "https:/project-together-app.herokuapp.com/build/assets/ActivitiesByCategory-7fb1817a.css"
+    ],
+    "file": "https:/project-together-app.herokuapp.com/build/assets/ActivitiesByCategory-e49e97e7.js",
+    "imports": [
+      "__plugin-vue_export-helper-c27b6911.js",
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Activity/ActivitiesByCategory.vue"
+  },
   "resources/js/Pages/Activity/ActivityDetails.css": {
-    "file": "assets/ActivityDetails-ce971667.css",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/ActivityDetails-d04e65ff.css",
     "src": "resources/js/Pages/Activity/ActivityDetails.css"
   },
   "resources/js/Pages/Activity/ActivityDetails.vue": {
     "css": [
-      "assets/ActivityDetails-ce971667.css"
+      "https:/project-together-app.herokuapp.com/build/assets/ActivityDetails-d04e65ff.css"
     ],
-    "file": "assets/ActivityDetails-5bb569c3.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/ActivityDetails-4df2c627.js",
     "imports": [
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js"
@@ -164,8 +180,15 @@
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Activity/ActivityDetails.vue"
   },
+  "resources/js/Pages/Activity/ActivityForm.css": {
+    "file": "https:/project-together-app.herokuapp.com/build/assets/ActivityForm-75bb1f24.css",
+    "src": "resources/js/Pages/Activity/ActivityForm.css"
+  },
   "resources/js/Pages/Activity/ActivityForm.vue": {
-    "file": "assets/ActivityForm-9b7c0aaa.js",
+    "css": [
+      "https:/project-together-app.herokuapp.com/build/assets/ActivityForm-75bb1f24.css"
+    ],
+    "file": "https:/project-together-app.herokuapp.com/build/assets/ActivityForm-622fde55.js",
     "imports": [
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js"
@@ -174,16 +197,16 @@
     "src": "resources/js/Pages/Activity/ActivityForm.vue"
   },
   "resources/js/Pages/App.css": {
-    "file": "assets/App-3062ba37.css",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/App-cfce0314.css",
     "src": "resources/js/Pages/App.css"
   },
   "resources/js/Pages/App.vue": {
     "css": [
-      "assets/App-3062ba37.css"
+      "https:/project-together-app.herokuapp.com/build/assets/App-cfce0314.css"
     ],
-    "file": "assets/App-2c6a6bc1.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/App-4d5e292a.js",
     "imports": [
-      "_activitiesStore-b2399956.js",
+      "_activitiesStore-b8d99cc3.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
@@ -191,16 +214,16 @@
     "src": "resources/js/Pages/App.vue"
   },
   "resources/js/Pages/AppOld.css": {
-    "file": "assets/AppOld-43d27889.css",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/AppOld-43d27889.css",
     "src": "resources/js/Pages/AppOld.css"
   },
   "resources/js/Pages/AppOld.vue": {
     "css": [
-      "assets/AppOld-43d27889.css"
+      "https:/project-together-app.herokuapp.com/build/assets/AppOld-43d27889.css"
     ],
-    "file": "assets/AppOld-c44d0c72.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/AppOld-36766c8d.js",
     "imports": [
-      "_activitiesStore-b2399956.js",
+      "_activitiesStore-b8d99cc3.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
@@ -208,238 +231,238 @@
     "src": "resources/js/Pages/AppOld.vue"
   },
   "resources/js/Pages/Auth/ConfirmPassword.vue": {
-    "file": "assets/ConfirmPassword-a1a7fa2a.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/ConfirmPassword-8785d3c4.js",
     "imports": [
       "resources/js/app.js",
-      "_AuthenticationCard-7c71aefa.js",
-      "_AuthenticationCardLogo-4c2aeff0.js",
-      "_TextInput-59eb2516.js",
-      "_InputLabel-2d7f9f69.js",
-      "_PrimaryButton-bbf9a4fc.js",
+      "_AuthenticationCard-9153b8fe.js",
+      "_AuthenticationCardLogo-f73993d4.js",
+      "_TextInput-d208ba83.js",
+      "_InputLabel-f25ebf8a.js",
+      "_PrimaryButton-de897cca.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/ConfirmPassword.vue"
   },
   "resources/js/Pages/Auth/ForgotPassword.vue": {
-    "file": "assets/ForgotPassword-12517ca7.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/ForgotPassword-c18c1d13.js",
     "imports": [
       "resources/js/app.js",
-      "_AuthenticationCard-7c71aefa.js",
-      "_AuthenticationCardLogo-4c2aeff0.js",
-      "_TextInput-59eb2516.js",
-      "_InputLabel-2d7f9f69.js",
-      "_PrimaryButton-bbf9a4fc.js",
+      "_AuthenticationCard-9153b8fe.js",
+      "_AuthenticationCardLogo-f73993d4.js",
+      "_TextInput-d208ba83.js",
+      "_InputLabel-f25ebf8a.js",
+      "_PrimaryButton-de897cca.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/ForgotPassword.vue"
   },
   "resources/js/Pages/Auth/Login.vue": {
-    "file": "assets/Login-f9c17840.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/Login-fee822ef.js",
     "imports": [
       "resources/js/app.js",
-      "_AuthenticationCard-7c71aefa.js",
-      "_AuthenticationCardLogo-4c2aeff0.js",
-      "_Checkbox-dd99216d.js",
-      "_TextInput-59eb2516.js",
-      "_InputLabel-2d7f9f69.js",
-      "_PrimaryButton-bbf9a4fc.js",
+      "_AuthenticationCard-9153b8fe.js",
+      "_AuthenticationCardLogo-f73993d4.js",
+      "_Checkbox-904b8a55.js",
+      "_TextInput-d208ba83.js",
+      "_InputLabel-f25ebf8a.js",
+      "_PrimaryButton-de897cca.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/Login.vue"
   },
   "resources/js/Pages/Auth/Register.vue": {
-    "file": "assets/Register-5408c197.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/Register-02e10b90.js",
     "imports": [
       "resources/js/app.js",
-      "_AuthenticationCard-7c71aefa.js",
-      "_AuthenticationCardLogo-4c2aeff0.js",
-      "_Checkbox-dd99216d.js",
-      "_TextInput-59eb2516.js",
-      "_InputLabel-2d7f9f69.js",
-      "_PrimaryButton-bbf9a4fc.js",
+      "_AuthenticationCard-9153b8fe.js",
+      "_AuthenticationCardLogo-f73993d4.js",
+      "_Checkbox-904b8a55.js",
+      "_TextInput-d208ba83.js",
+      "_InputLabel-f25ebf8a.js",
+      "_PrimaryButton-de897cca.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/Register.vue"
   },
   "resources/js/Pages/Auth/ResetPassword.vue": {
-    "file": "assets/ResetPassword-6a73e923.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/ResetPassword-a212bf37.js",
     "imports": [
       "resources/js/app.js",
-      "_AuthenticationCard-7c71aefa.js",
-      "_AuthenticationCardLogo-4c2aeff0.js",
-      "_TextInput-59eb2516.js",
-      "_InputLabel-2d7f9f69.js",
-      "_PrimaryButton-bbf9a4fc.js",
+      "_AuthenticationCard-9153b8fe.js",
+      "_AuthenticationCardLogo-f73993d4.js",
+      "_TextInput-d208ba83.js",
+      "_InputLabel-f25ebf8a.js",
+      "_PrimaryButton-de897cca.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/ResetPassword.vue"
   },
   "resources/js/Pages/Auth/TwoFactorChallenge.vue": {
-    "file": "assets/TwoFactorChallenge-9e1567d4.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/TwoFactorChallenge-6472c89c.js",
     "imports": [
       "resources/js/app.js",
-      "_AuthenticationCard-7c71aefa.js",
-      "_AuthenticationCardLogo-4c2aeff0.js",
-      "_TextInput-59eb2516.js",
-      "_InputLabel-2d7f9f69.js",
-      "_PrimaryButton-bbf9a4fc.js",
+      "_AuthenticationCard-9153b8fe.js",
+      "_AuthenticationCardLogo-f73993d4.js",
+      "_TextInput-d208ba83.js",
+      "_InputLabel-f25ebf8a.js",
+      "_PrimaryButton-de897cca.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/TwoFactorChallenge.vue"
   },
   "resources/js/Pages/Auth/VerifyEmail.vue": {
-    "file": "assets/VerifyEmail-208432e8.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/VerifyEmail-749ac19c.js",
     "imports": [
       "resources/js/app.js",
-      "_AuthenticationCard-7c71aefa.js",
-      "_AuthenticationCardLogo-4c2aeff0.js",
-      "_PrimaryButton-bbf9a4fc.js",
+      "_AuthenticationCard-9153b8fe.js",
+      "_AuthenticationCardLogo-f73993d4.js",
+      "_PrimaryButton-de897cca.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/VerifyEmail.vue"
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard-0d15197d.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/Dashboard-c27c31d0.js",
     "imports": [
       "resources/js/app.js",
       "resources/js/Pages/Welcome.vue",
       "resources/js/Pages/App.vue",
-      "_activitiesStore-b2399956.js",
+      "_activitiesStore-b8d99cc3.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_DropdownLink-d7311ff8.js"
+      "_DropdownLink-ef9fb0d8.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Dashboard.vue"
   },
   "resources/js/Pages/PrivacyPolicy.vue": {
-    "file": "assets/PrivacyPolicy-61407584.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/PrivacyPolicy-61c3bf7d.js",
     "imports": [
       "resources/js/app.js",
-      "_AuthenticationCardLogo-4c2aeff0.js"
+      "_AuthenticationCardLogo-f73993d4.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/PrivacyPolicy.vue"
   },
   "resources/js/Pages/Profile/Partials/DeleteUserForm.vue": {
-    "file": "assets/DeleteUserForm-623506f1.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/DeleteUserForm-fe5a391d.js",
     "imports": [
       "resources/js/app.js",
-      "_DialogModal-3de9000f.js",
-      "_DangerButton-b3450e25.js",
-      "_TextInput-59eb2516.js",
-      "_SecondaryButton-6355143f.js",
-      "_SectionTitle-6c566070.js",
+      "_DialogModal-104e56e2.js",
+      "_DangerButton-77e6d62b.js",
+      "_TextInput-d208ba83.js",
+      "_SecondaryButton-eacf907f.js",
+      "_SectionTitle-320948ee.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Profile/Partials/DeleteUserForm.vue"
   },
   "resources/js/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue": {
-    "file": "assets/LogoutOtherBrowserSessionsForm-947e25eb.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/LogoutOtherBrowserSessionsForm-bacc9ce5.js",
     "imports": [
       "resources/js/app.js",
-      "_ActionMessage-f930909e.js",
-      "_DialogModal-3de9000f.js",
-      "_TextInput-59eb2516.js",
-      "_PrimaryButton-bbf9a4fc.js",
-      "_SecondaryButton-6355143f.js",
-      "_SectionTitle-6c566070.js",
+      "_ActionMessage-9eb27abe.js",
+      "_DialogModal-104e56e2.js",
+      "_TextInput-d208ba83.js",
+      "_PrimaryButton-de897cca.js",
+      "_SecondaryButton-eacf907f.js",
+      "_SectionTitle-320948ee.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue"
   },
   "resources/js/Pages/Profile/Partials/TwoFactorAuthenticationForm.vue": {
-    "file": "assets/TwoFactorAuthenticationForm-45fe16a3.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/TwoFactorAuthenticationForm-55155432.js",
     "imports": [
       "resources/js/app.js",
-      "_DialogModal-3de9000f.js",
-      "_TextInput-59eb2516.js",
-      "_PrimaryButton-bbf9a4fc.js",
-      "_SecondaryButton-6355143f.js",
-      "_DangerButton-b3450e25.js",
-      "_InputLabel-2d7f9f69.js",
-      "_SectionTitle-6c566070.js",
+      "_DialogModal-104e56e2.js",
+      "_TextInput-d208ba83.js",
+      "_PrimaryButton-de897cca.js",
+      "_SecondaryButton-eacf907f.js",
+      "_DangerButton-77e6d62b.js",
+      "_InputLabel-f25ebf8a.js",
+      "_SectionTitle-320948ee.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Profile/Partials/TwoFactorAuthenticationForm.vue"
   },
   "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue": {
-    "file": "assets/UpdatePasswordForm-d0f09eb4.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/UpdatePasswordForm-482953ee.js",
     "imports": [
       "resources/js/app.js",
-      "_ActionMessage-f930909e.js",
-      "_FormSection-517d6fc8.js",
-      "_TextInput-59eb2516.js",
-      "_InputLabel-2d7f9f69.js",
-      "_PrimaryButton-bbf9a4fc.js",
-      "_SectionTitle-6c566070.js",
+      "_ActionMessage-9eb27abe.js",
+      "_FormSection-e5a9d2e5.js",
+      "_TextInput-d208ba83.js",
+      "_InputLabel-f25ebf8a.js",
+      "_PrimaryButton-de897cca.js",
+      "_SectionTitle-320948ee.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue"
   },
   "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.vue": {
-    "file": "assets/UpdateProfileInformationForm-884e1169.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/UpdateProfileInformationForm-cfb34dbc.js",
     "imports": [
       "resources/js/app.js",
-      "_ActionMessage-f930909e.js",
-      "_FormSection-517d6fc8.js",
-      "_TextInput-59eb2516.js",
-      "_InputLabel-2d7f9f69.js",
-      "_PrimaryButton-bbf9a4fc.js",
-      "_SecondaryButton-6355143f.js",
-      "_SectionTitle-6c566070.js",
+      "_ActionMessage-9eb27abe.js",
+      "_FormSection-e5a9d2e5.js",
+      "_TextInput-d208ba83.js",
+      "_InputLabel-f25ebf8a.js",
+      "_PrimaryButton-de897cca.js",
+      "_SecondaryButton-eacf907f.js",
+      "_SectionTitle-320948ee.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.vue"
   },
   "resources/js/Pages/Profile/Show.vue": {
-    "file": "assets/Show-ef6dd53c.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/Show-182d23ae.js",
     "imports": [
-      "_AppLayout-6b7cb4cd.js",
+      "_AppLayout-4a6b755a.js",
       "resources/js/Pages/Profile/Partials/DeleteUserForm.vue",
       "resources/js/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue",
-      "_SectionBorder-b17d9841.js",
+      "_SectionBorder-bbb1a221.js",
       "resources/js/Pages/Profile/Partials/TwoFactorAuthenticationForm.vue",
       "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue",
       "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.vue",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_DropdownLink-d7311ff8.js",
-      "_DialogModal-3de9000f.js",
-      "_SectionTitle-6c566070.js",
-      "_DangerButton-b3450e25.js",
-      "_TextInput-59eb2516.js",
-      "_SecondaryButton-6355143f.js",
-      "_ActionMessage-f930909e.js",
-      "_PrimaryButton-bbf9a4fc.js",
-      "_InputLabel-2d7f9f69.js",
-      "_FormSection-517d6fc8.js"
+      "_DropdownLink-ef9fb0d8.js",
+      "_DialogModal-104e56e2.js",
+      "_SectionTitle-320948ee.js",
+      "_DangerButton-77e6d62b.js",
+      "_TextInput-d208ba83.js",
+      "_SecondaryButton-eacf907f.js",
+      "_ActionMessage-9eb27abe.js",
+      "_PrimaryButton-de897cca.js",
+      "_InputLabel-f25ebf8a.js",
+      "_FormSection-e5a9d2e5.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Profile/Show.vue"
   },
   "resources/js/Pages/TermsOfService.vue": {
-    "file": "assets/TermsOfService-3c56645e.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/TermsOfService-59576c06.js",
     "imports": [
       "resources/js/app.js",
-      "_AuthenticationCardLogo-4c2aeff0.js"
+      "_AuthenticationCardLogo-f73993d4.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/TermsOfService.vue"
   },
   "resources/js/Pages/Test.vue": {
-    "file": "assets/Test-37b47f80.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/Test-53a7109f.js",
     "imports": [
       "resources/js/app.js"
     ],
@@ -447,7 +470,7 @@
     "src": "resources/js/Pages/Test.vue"
   },
   "resources/js/Pages/TogetherApp/CardActivity.vue": {
-    "file": "assets/CardActivity-39cdb07e.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/CardActivity-8b13a08a.js",
     "imports": [
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js"
@@ -456,14 +479,14 @@
     "src": "resources/js/Pages/TogetherApp/CardActivity.vue"
   },
   "resources/js/Pages/TogetherApp/DetailsActivity.css": {
-    "file": "assets/EditActivity-e3b0c442.css",
-    "src": "resources/js/Pages/TogetherApp/DetailsActivity.css"
+    "file": "https:/project-together-app.herokuapp.com/build/assets/DetailsActivity-e3b0c442.css",
+    "src": "resources/js/Pages/TogetherApp/IndexActivity.css"
   },
   "resources/js/Pages/TogetherApp/DetailsActivity.vue": {
     "css": [
-      "assets/EditActivity-e3b0c442.css"
+      "https:/project-together-app.herokuapp.com/build/assets/DetailsActivity-e3b0c442.css"
     ],
-    "file": "assets/DetailsActivity-aaadb122.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/DetailsActivity-7415abf2.js",
     "imports": [
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js"
@@ -472,14 +495,14 @@
     "src": "resources/js/Pages/TogetherApp/DetailsActivity.vue"
   },
   "resources/js/Pages/TogetherApp/EditActivity.css": {
-    "file": "assets/EditActivity-e3b0c442.css",
-    "src": "resources/js/Pages/TogetherApp/DetailsActivity.css"
+    "file": "https:/project-together-app.herokuapp.com/build/assets/DetailsActivity-e3b0c442.css",
+    "src": "resources/js/Pages/TogetherApp/IndexActivity.css"
   },
   "resources/js/Pages/TogetherApp/EditActivity.vue": {
     "css": [
-      "assets/EditActivity-e3b0c442.css"
+      "https:/project-together-app.herokuapp.com/build/assets/DetailsActivity-e3b0c442.css"
     ],
-    "file": "assets/EditActivity-6088285f.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/EditActivity-2b9f6d74.js",
     "imports": [
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js"
@@ -488,14 +511,14 @@
     "src": "resources/js/Pages/TogetherApp/EditActivity.vue"
   },
   "resources/js/Pages/TogetherApp/IndexActivity.css": {
-    "file": "assets/EditActivity-e3b0c442.css",
-    "src": "resources/js/Pages/TogetherApp/DetailsActivity.css"
+    "file": "https:/project-together-app.herokuapp.com/build/assets/DetailsActivity-e3b0c442.css",
+    "src": "resources/js/Pages/TogetherApp/IndexActivity.css"
   },
   "resources/js/Pages/TogetherApp/IndexActivity.vue": {
     "css": [
-      "assets/EditActivity-e3b0c442.css"
+      "https:/project-together-app.herokuapp.com/build/assets/DetailsActivity-e3b0c442.css"
     ],
-    "file": "assets/IndexActivity-5b3db225.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/IndexActivity-5712a34d.js",
     "imports": [
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js"
@@ -504,14 +527,14 @@
     "src": "resources/js/Pages/TogetherApp/IndexActivity.vue"
   },
   "resources/js/Pages/Welcome copy.css": {
-    "file": "assets/Welcome copy-665689a9.css",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/Welcome copy-665689a9.css",
     "src": "resources/js/Pages/Welcome.css"
   },
   "resources/js/Pages/Welcome copy.vue": {
     "css": [
-      "assets/Welcome copy-665689a9.css"
+      "https:/project-together-app.herokuapp.com/build/assets/Welcome copy-665689a9.css"
     ],
-    "file": "assets/Welcome copy-e0dc833a.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/Welcome copy-804ee33c.js",
     "imports": [
       "resources/js/app.js"
     ],
@@ -519,35 +542,36 @@
     "src": "resources/js/Pages/Welcome copy.vue"
   },
   "resources/js/Pages/Welcome.css": {
-    "file": "assets/Welcome copy-665689a9.css",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/Welcome copy-665689a9.css",
     "src": "resources/js/Pages/Welcome.css"
   },
   "resources/js/Pages/Welcome.vue": {
     "css": [
-      "assets/Welcome copy-665689a9.css"
+      "https:/project-together-app.herokuapp.com/build/assets/Welcome copy-665689a9.css"
     ],
-    "file": "assets/Welcome-1b85bb0a.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/Welcome-de7c1b32.js",
     "imports": [
       "resources/js/app.js",
       "resources/js/Pages/App.vue",
-      "_DropdownLink-d7311ff8.js",
-      "_activitiesStore-b2399956.js",
+      "_DropdownLink-ef9fb0d8.js",
+      "_activitiesStore-b8d99cc3.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Welcome.vue"
   },
   "resources/js/app.css": {
-    "file": "assets/app-981ad9c6.css",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/app-be48f28e.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
     "css": [
-      "assets/app-981ad9c6.css"
+      "https:/project-together-app.herokuapp.com/build/assets/app-be48f28e.css"
     ],
     "dynamicImports": [
       "resources/js/Pages/API/Index.vue",
       "resources/js/Pages/API/Partials/ApiTokenManager.vue",
+      "resources/js/Pages/Activity/ActivitiesByCategory.vue",
       "resources/js/Pages/Activity/ActivityDetails.vue",
       "resources/js/Pages/Activity/ActivityForm.vue",
       "resources/js/Pages/App.vue",
@@ -576,7 +600,7 @@
       "resources/js/Pages/Welcome copy.vue",
       "resources/js/Pages/Welcome.vue"
     ],
-    "file": "assets/app-e38e0622.js",
+    "file": "https:/project-together-app.herokuapp.com/build/assets/app-99faaeeb.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   }

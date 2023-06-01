@@ -36,14 +36,15 @@
    ></v-text-field>
    -->
    <!-- Bulle categorie -->
-   <div style="display: flex; overflow-x: auto;" class="mb-16">
+   <v-row class="overflow-x-auto mb-16 mt-4" max-width="300" style="display: flex; flex-direction: row; flex-wrap: nowrap;" align-content="center"
+         >
       <div v-for="category in categories" :key="category.id" style="display: flex; flex-direction: column; align-items: center; margin-right: 20px;">
          <a :href="route('activity.activitiesByCategory', {id: category.id})">
             <div style="width: 10vh; height: 10vh; border-radius: 50%; background: red; position: relative; background-image: url('https://cdn.vuetifyjs.com/images/cards/docks.jpg'); background-size: cover;" class="mr-6 shadow-2xl"></div>
             <div  class="mt-2 text-white">{{ category.name }}</div>
          </a>
       </div>
-   </div>
+   </v-row>
    <!-- Ancienne version 
    
    <div style="display: flex; flex-direction: row;" class="mb-16" v-for="category in categories" :key="category.id">
@@ -99,7 +100,7 @@
 
                <v-card-actions>
                   <v-btn color="white bg-green rounded-pill px-4 mx-auto" style="width: 18vh; height: 5.5vh">
-                         <a :href="route('activity.show', {id: activity.id, distance: activity.distance})">Infos</a>
+                         <a :href="route('activity.show', {id: activity.activityID, distance: activity.distance})">Infos {{ activity.activityID }}</a>
                   </v-btn>
                </v-card-actions>
             </v-card>
@@ -118,7 +119,7 @@
                <v-img
                   class="align-end text-white"
                   height="200"
-                  src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                  :src="getImage(activity.image)"
                   cover
                >
                
@@ -145,16 +146,20 @@
                   <div>User {{activity.promoter_id}}{{activity.userName}}</div>
                   <div>
                      ratings
+                  </div>
+                  <div class="flex items-center px-2">
+                     <svg v-for="rate in getStarRating(activity.userRate)" :key="rate.id" aria-hidden="true" class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star {{rate}}</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                     <svg v-for="notRate in getStarNotRating(activity.userRate)" :key="notRate.id" aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
                   </div>   
                   <div>{{activity.participants_number}} Participant(s)</div>
                </v-card-text>
 
                <v-card-actions>
+                  <a :href="route('activity.show', {id: activity.activityID, distance: activity.distance})" class="mx-auto">
                   <v-btn color="white bg-green rounded-pill px-4 mx-auto" style="width: 18vh; height: 5.5vh">
-                     <span>
-                        Infos
-                     </span>
+                          Infos
                   </v-btn>
+                  </a>
                </v-card-actions>
             </v-card>
          </v-col>
@@ -233,25 +238,25 @@
    }),
    methods: {
       convertFormatDate(date) {
+         // Convertit un format de date en un autre format avec des chaînes de caractères. En parcourant un tableau avec le nom de chaque mois. 
          let numericDate = date.split(' ', 1);
          let numericDateSplit = numericDate.map(el => el.split('-', 3));
          return numericDateSplit[0][2] +' '+this.month[numericDateSplit[0][1].slice(1)] +' '+ numericDateSplit[0][0];
 
       },
       getImage(image) {
-         console.log('test')
+         // Récupère l'URL de l'image en fonction du paramètre 'image'. Si la valeur image n'est pas null dans la db alors on charge cette image.
          if(image !== null) {
-            console.log(true);
             return 'assets/images/'+ image;
             // console.log(activity.image);
          }
          else{
-            console.log(false);
             return 'https://cdn.vuetifyjs.com/images/cards/docks.jpg';
             // console.log(activity.image);
          }
       },
       getStarRating(userRate) {
+         // Récupère les étoiles de notation en fonction de la note de l'utilisateur
          this.rates = [];
          if(userRate > 0) {
             this.ratingActive = true;
@@ -270,6 +275,7 @@
          
       },
       getStarNotRating(userRate) {
+         // Récupère les étoiles non notées en fonction de la note de l'utilisateur
          this.notRates = [];
          if(userRate > 0){
             this.StarNotRating = 5 - userRate;

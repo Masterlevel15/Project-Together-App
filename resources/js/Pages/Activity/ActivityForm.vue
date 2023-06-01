@@ -17,19 +17,19 @@
     <div>Form Activity {{ findCategoryId() }}</div>
     
     <v-form
-    validate-on="submit"
-    @submit.prevent=""
+    @submit="handleSubmit" action="/store" enctype="multipart/form-data"
     >
-        <v-file-input label="Image" @change="handleFileUpload" class="mt-16">
+    @csrf
+        <v-file-input label="Image" @change="handleFileUpload" name="image" class="mt-16">
 
         </v-file-input>
-        <v-text-field label="Titre" v-model="form.title"></v-text-field>
-        <input type="select" >
+        <v-text-field label="Titre" v-model="form.title" ></v-text-field>
+        <input type="select"  >
           <v-select
             :return-object="true"
             v-model="form.categorySelected"
             label="Select"
-            :items="form.categoriesName"
+            :items="categoriesName"
             @change="findIdCategorySelected"
           >
           </v-select>
@@ -54,15 +54,26 @@
         </v-sheet>
         </v-col>
         </v-row>
+        <div class="datetime">
+          <input type="date"
+          min="2018-01-01" max="2030-12-31" 
+          v-model="form.date">
+          <input type="time" id="appt" name="appt"
+          min="00:00" max="24:00" required
+          v-model="form.hour">
+        </div>
         <v-text-field label="Date de l'activité" v-model="form.date"></v-text-field>
         <v-text-field label="Heure de l'activité" v-model="form.hour"></v-text-field>
+        <input type="time" id="appt" name="appt"
+          min="00:00" max="24:00" required
+          v-model="form.term">
         <v-text-field label="Durée de l'activité" v-model="form.term"></v-text-field>
         <v-text-field label="Nombre de participants" v-model="form.participants_number"></v-text-field>
         <v-text-field label="Adresse" v-model="form.address"></v-text-field>
         <v-text-field label="Ville" v-model="form.city"></v-text-field>
         <v-text-field label="Pays" v-model="form.country"></v-text-field>
-        <v-text-field label="Description de l'activité" v-model="form.description"></v-text-field>
-        <v-btn type="submit" @click="sendForm" block class="mt-2 primary" >Submit</v-btn>
+        <v-textarea label="Description de l'activité" v-model="form.description"></v-textarea>
+        <v-btn type="submit" block class="mt-2 primary">Submit</v-btn>
     </v-form>
 </v-container>
 </template>
@@ -72,8 +83,8 @@
 export default {
   data() {
     return {
+      categoriesName: [],
       form: {
-        categoriesName: [],
         categorySelected: null,
         image: null,
         title: null,
@@ -90,6 +101,7 @@ export default {
       },
       selectedDate: null,
       datetime: null,
+      formData: [],
     };
   },
   methods: {
@@ -109,6 +121,7 @@ export default {
     },
     handleFileUpload(file) {
       this.form.image = file.target.files[0];
+      console.log(file.target.files[0]);
     },
     findCategoryId() {
       for (let index = 0; index < this.categories.length; index++) {
@@ -124,7 +137,55 @@ export default {
     concatDateHour() {
       this.datetime = this.form.date + ' ' + this.form.hour;
     },
+    handleSubmit(event) {
+      event.preventDefault();
+      this.findCategoryId();
+      this.concatDateHour();
+      let formData = new FormData();
+      formData.append('file', event.target.elements.image.files[0]);
+      formData.append('title', this.form.title);
+      formData.append('categoryID', this.form.categoryIndex);
+      formData.append('date', this.datetime);
+      formData.append('hour', this.form.hour);
+      formData.append('term', this.form.term);
+      formData.append('participants_number', this.form.participants_number);
+      formData.append('address', this.form.address);
+      formData.append('city', this.form.city);
+      formData.append('country', this.form.country);
+      formData.append('description', this.form.description);
+      console.log(event.target.elements.image.files[0]);
+
+      axios.post('/api/activity/store', formData)
+        .then(response => {
+          // handle success
+          window.location.href = response.data.redirect;
+        })
+        .catch(error => {
+          // handle error
+        });
+    },
+    sendFormDataRouteWeb() {
+      // Route WEB
+      this.findCategoryId();
+      this.concatDateHour();
+      this.formData = new FormData();
+      this.formData.append('file', this.form.image);
+      this.formData.append('title', this.form.title);
+      this.formData.append('categoryID', this.form.categoryIndex);
+      this.formData.append('date', this.datetime);
+      this.formData.append('hour', this.form.hour);
+      this.formData.append('term', this.form.term);
+      this.formData.append('participants_number', this.form.participants_number);
+      this.formData.append('address', this.form.address);
+      this.formData.append('city', this.form.city);
+      this.formData.append('country', this.form.country);
+      this.formData.append('description', this.form.description);
+
+
+      //return this.formData;
+    },
     sendForm() {
+      // Route Api
       this.findCategoryId();
       this.concatDateHour();
       let formData = new FormData();
@@ -155,9 +216,11 @@ export default {
   props:{
     categories: Array,
   },
+  computed: {
+  },
   created() {
     this.categories.forEach((category) => {
-        this.form.categoriesName.push(category.name);
+        this.categoriesName.push(category.name);
       });
   },
 }
@@ -202,5 +265,9 @@ nav button:first-of-type {
 
 .v-file-input {
   text-align: center;
+}
+.datetime {
+display: flex;
+gap: 1vh;
 }
 </style>

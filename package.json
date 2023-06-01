@@ -3,7 +3,9 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build && vite build --ssr",
-        "prod": "mix --production"
+        "prod": "mix --production",
+        "production": "npm run mix && NODE_ENV=production node_modules/.bin/cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "mix": "NODE_ENV=development node_modules/.bin/cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
@@ -13,7 +15,7 @@
         "@vue/server-renderer": "^3.2.31",
         "autoprefixer": "^10.4.7",
         "axios": "^1.1.2",
-        "laravel-vite-plugin": "^0.7.2",
+        "laravel-vite-plugin": "^0.7.8",
         "postcss": "^8.4.14",
         "resolve-url-loader": "^5.0.0",
         "sass": "^1.62.1",

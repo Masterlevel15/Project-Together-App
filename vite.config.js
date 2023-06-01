@@ -8,6 +8,7 @@ export default defineConfig({
             input: 'resources/js/app.js',
             ssr: 'resources/js/ssr.js',
             refresh: true,
+            include: ['resources/css/app.css'], // Ajoutez cette ligne pour inclure le fichier CSS
         }),
         vue({
             template: {
@@ -18,4 +19,8 @@ export default defineConfig({
             },
         }),
     ],
+    build: {
+        assetsDir: '', // Remplacez par le chemin HTTPS approprié
+        // ... autres options de construction
+      },
 });

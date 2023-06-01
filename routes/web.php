@@ -32,12 +32,15 @@ Route::get('/', function () {
 //Route détails d'une activité
 Route::get('/activity/{id}', [\App\Http\Controllers\ActivityController::class, 'show'])->name('activity.show');
 
-// Route de création d'une activité
+// Route de création d'une activité vers le formulaire
 Route::get('/create', function () {
     return Inertia::render('Activity/ActivityForm',[
         'categories' => App\Models\Category::all(),
     ]);
 })->name('activity.create');
+
+// Route de création d'une activité vers l'action d'ajout à la DB
+Route::get('/store', [\App\Http\Controllers\ActivityController::class, 'store'])->name('activity.store');
 
 //Route Activity par catégorie
 Route::get('/activity/category/{id}', [\App\Http\Controllers\ActivityController::class, 'findActivitiesByCategory'])

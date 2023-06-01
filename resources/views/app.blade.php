@@ -9,14 +9,14 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-        @vite('resources/css/app.css')
-        @vite('resources/js/app.js')
-
         <!-- Scripts -->
         @routes
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
+        <div>Test</div>
         @inertia
+
+        <script type="module" src="{{ vite_asset('/resources/js/app.js') }}"></script>
     </body>
 </html>
