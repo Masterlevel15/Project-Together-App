@@ -1,10 +1,13 @@
 import './bootstrap';
 import '../css/app.css';
 
+
+
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
+
 
 //Pinia
 import { createPinia, setActivePinia} from 'pinia'
@@ -27,13 +30,18 @@ const appName = window.document.getElementsByTagName('title')[0]?.innerText || '
 
 
 createInertiaApp({
-    resolve: name => {
-      const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
-      return pages[`./Pages/${name}.vue`]
-    },
+    id: 'app',
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
-      createApp({ render: () => h(App, props) })
-        .use(plugin)
-        .mount(el)
+        return createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .use(pinia)
+            .use(ZiggyVue, Ziggy)
+            .use(vuetify)
+            .mount(el);
     },
-  })
+    progress: {
+        color: '#4B5563',
+    },
+});

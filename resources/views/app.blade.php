@@ -12,13 +12,13 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <!-- Scripts -->
-        <link href="{{ asset('build/app.css') }}" rel="stylesheet">
-        @routes
+        <link href="{{ mix('/build/app.css') }}" rel="stylesheet">
+        @routes 
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
         <div>test</div>
         @inertia
-        <script src="{{ asset('build/app.js') }}"></script>
+        <script src="{{ mix('/build/app.js') }}"></script>
     </body>
 </html>

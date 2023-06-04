@@ -5,10 +5,11 @@
         "build": "vite build && vite build --ssr",
         "prod": "mix --production",
         "production": "npm run mix && NODE_ENV=production node_modules/.bin/cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "mix": "NODE_ENV=development node_modules/.bin/cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+        "mix": "NODE_ENV=development node_modules/.bin/cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "heroku-postbuild": "npm install --production"
     },
     "devDependencies": {
-        "@inertiajs/vue3": "^1.0.0",
+        "@inertiajs/vue3": "^1.0.7",
         "@tailwindcss/forms": "^0.5.2",
         "@tailwindcss/typography": "^0.5.2",
         "@vitejs/plugin-vue": "^4.0.0",
@@ -29,6 +30,7 @@
         "@jamescoyle/vue-icon": "^0.1.2",
         "@mdi/font": "^7.2.96",
         "@mdi/js": "^7.2.96",
+        "glob": "^10.2.6",
         "pinia": "^2.0.33",
         "vuetify": "^3.1.11"
     }

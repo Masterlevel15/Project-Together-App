@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 
+
 export default defineConfig({
     plugins: [
         laravel({
@@ -20,6 +21,9 @@ export default defineConfig({
         }),
     ],
     build: {
+        rollupOptions: {
+            external: ['glob'],
+        },
         assetsDir: '', // Remplacez par le chemin HTTPS approprié
         // ... autres options de construction
       },
