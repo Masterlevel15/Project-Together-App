@@ -25,12 +25,12 @@ return new class extends Migration
             $table->mediumText('description');
             $table->date('birthDate');
             $table->integer('rate');
-            $table->unsignedBigInteger('country_id');
+            $table->unsignedBigInteger('country_id')->nullable();
             $table->foreign('country_id')
                 ->references('id')
                 ->on('countries')
                 ->onDelete('set null');
-            $table->unsignedBigInteger('city_id');
+            $table->unsignedBigInteger('city_id')->nullable();
             $table->foreign('city_id')
                 ->references('id')
                 ->on('cities')

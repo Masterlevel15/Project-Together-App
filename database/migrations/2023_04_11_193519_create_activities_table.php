@@ -23,27 +23,27 @@ return new class extends Migration
             $table->float('latitude', 8, 6);
             $table->float('longitude', 9, 6);
             $table->string('image', 2048)->nullable();
-            $table->unsignedBigInteger('country_id');
+            $table->unsignedBigInteger('country_id')->nullable();
             $table->foreign('country_id')
                 ->references('id')
                 ->on('countries')
                 ->onDelete('set null');
-            $table->unsignedBigInteger('city_id');
+            $table->unsignedBigInteger('city_id')->nullable();
             $table->foreign('city_id')
                 ->references('id')
                 ->on('cities')
                 ->onDelete('set null');
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->foreign('category_id')
                 ->references('id')
                 ->on('categories')
                 ->onDelete('set null');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('set null');
-            $table->unsignedBigInteger('promoter_id');
+            $table->unsignedBigInteger('promoter_id')->nullable();
             $table->foreign('promoter_id')
                 ->references('id')
                 ->on('users')

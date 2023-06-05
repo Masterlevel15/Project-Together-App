@@ -109,7 +109,7 @@ class ActivityController extends Controller
 
         $activities = Activity::all();
         $nominatim = new Nominatim($httpClient, 'https://nominatim.openstreetmap.org', $userAgent);
-        
+
         
         foreach ($activities as $activity) {
             // Générer une adresse belge aléatoire
@@ -144,6 +144,7 @@ class ActivityController extends Controller
                 $city = City::where('name', $cityName)->first();
                 if ($city) {
                     $activity->city_id = $city->id;
+                    $city->postal_code = $zipCode;
                 } else {
                     $city = new City();
                     $city->name = $cityName;
@@ -166,6 +167,9 @@ class ActivityController extends Controller
                     $activity->country_id = $country->id;
                     $city->save();
                 }
+
+                //zip code
+                // $city->postal_code = $zipCode;
 
                 $activity->latitude = $latitude;
                 $activity->longitude = $longitude;
