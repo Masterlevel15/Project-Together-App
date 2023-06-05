@@ -255,6 +255,7 @@
             // console.log(activity.image);
          }
       },
+      /*
       getStarRating(userRate) {
          // Récupère les étoiles de notation en fonction de la note de l'utilisateur
          this.rates = [];
@@ -291,9 +292,30 @@
          }
          return this.notRates;
       },
+      */
+     getStarRating(userRate) {
+  // Récupère les étoiles de notation en fonction de la note de l'utilisateur
+  if (userRate > 0) {
+    this.ratingActive = true;
+    return Array(userRate).fill().map((_, index) => index);
+  } else {
+    return [];
+  }
+},
+
+getStarNotRating(userRate) {
+  // Récupère les étoiles non notées en fonction de la note de l'utilisateur
+  if (userRate > 0) {
+    const starNotRating = 5 - userRate;
+    return Array(starNotRating).fill().map((_, index) => index);
+  } else {
+    return Array(5).fill().map((_, index) => index);
+  }
+}
    },
    computed: {
       sortedActivitiesByDistance() {
+         
          const activitiesStore = useActivitiesStore();
          activitiesStore.fetchLocation();
          return activitiesStore.sort;
@@ -301,6 +323,7 @@
       sortedActivitiesByDate() {
          const activitiesStore = useActivitiesStore();
          return activitiesStore.sortByDate;
+         
       },
    },
    created() {

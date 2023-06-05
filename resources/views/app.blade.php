@@ -12,13 +12,14 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <!-- Scripts -->
-        <link href="{{ mix('/build/app.css') }}" rel="stylesheet">
+        <!--<link href="{{ mix('/build/app.css') }}" rel="stylesheet">-->
+        @vite(["resources/js/app.js", "resources/js/Pages/{$page['component']}.vue"])
         @routes
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
         <div>test</div>
         @inertia
-        <script src="{{ mix('/build/app.js') }}"></script>
+        <!--<link href="{{ mix('/build/app.js') }}" rel="stylesheet">-->
     </body>
 </html>

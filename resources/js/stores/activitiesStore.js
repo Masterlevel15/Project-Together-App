@@ -14,6 +14,7 @@ export const useActivitiesStore = defineStore({
     sortByDate: Array, // Tableau de tri par date
     locationFetched: false, // Indicateur pour savoir si la localisation a été récupérée
     locationCache: null, // Cache de la localisation
+    fetchingLocation: null,
   }),
   getters: {
     getActivitiesSortedByDistance() {
@@ -22,9 +23,7 @@ export const useActivitiesStore = defineStore({
       if (!Array.isArray(this.activitiesValues)) {
         return [];
       }
-      this.sort = this.activitiesValues
-        .slice()
-        .sort((a, b) => a['distance'] - b['distance']);
+      this.sort = this.activitiesValues.sort((a, b) => a['distance'] - b['distance']);
         return this.sort;
       },
     getActivitiesSortedByDate() {
@@ -42,19 +41,32 @@ export const useActivitiesStore = defineStore({
   actions: {
       //const response = axios.get('api/activities'),
       async fetchLocation() {
-        // Action pour récupérer la localisation de l'utilisateur.
         if (this.locationFetched && this.locationCache) {
           return this.locationCache;
         }
+      
         const locationStore = useLocationStore();
-        // on attend que la position de l'utilisateur que renvoi l'api soit chargé
-        const position = await locationStore.fetchPosition();
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-        this.locationFetched = true;
-        this.locationCache = { latitude: this.latitude, longitude: this.longitude };
-        this.fetchActivities(this.locationCache.latitude, this.locationCache.longitude);
+      
+        if (!this.fetchingLocation && !this.locationFetched) {
+          this.fetchingLocation = true;
+      
+          try {
+            const position = await locationStore.fetchPosition();
+            this.latitude = position.coords.latitude;
+            this.longitude = position.coords.longitude;
+            this.locationCache = { latitude: this.latitude, longitude: this.longitude };
+            this.locationFetched = true;
+            this.fetchActivities(this.locationCache.latitude, this.locationCache.longitude);
+          } catch (error) {
+            // Gérer les erreurs de récupération de la position de l'utilisateur
+          } finally {
+            this.fetchingLocation = false;
+          }
+        }
+      
+        return this.locationCache;
       },
+      
       setFetchActivities(latitude, longitude){
         // this.fetchActivities(latitude, longitude);
       },

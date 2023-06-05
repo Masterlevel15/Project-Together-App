@@ -27,4 +27,9 @@ export default defineConfig({
         assetsDir: '', // Remplacez par le chemin HTTPS approprié
         // ... autres options de construction
       },
+    resolve: {
+        alias: {
+            '@': '/resources/js'
+        }
+    }
 });

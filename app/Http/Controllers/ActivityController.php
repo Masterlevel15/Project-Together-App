@@ -110,7 +110,7 @@ class ActivityController extends Controller
         $activities = Activity::all();
         $nominatim = new Nominatim($httpClient, 'https://nominatim.openstreetmap.org', $userAgent);
 
-        
+
         foreach ($activities as $activity) {
             // Générer une adresse belge aléatoire
             $faker = \Faker\Factory::create('fr_BE');
@@ -184,9 +184,6 @@ class ActivityController extends Controller
     }
     public function store(Request $request) {
         // dd($request->file('file')->getClientOriginalExtension());
-        /*return response()->json([
-            'redirect' => route('home')
-        ]);*/
         
         //INSERT DATABASE
         $userId = User::select('id')->inRandomOrder()->first()->id;
@@ -239,7 +236,7 @@ class ActivityController extends Controller
         } else {
             $country = new Country();
             $country->name = $countryName;
-            // $country->save();
+            $country->save();
             $activity->country_id = $country->id;
         }
 
@@ -252,7 +249,7 @@ class ActivityController extends Controller
         } else {
             $city = new City();
             $city->name = $cityName;
-            // $city->save();
+            $city->save();
             $activity->city_id = $city->id;
         }
 
@@ -286,6 +283,7 @@ class ActivityController extends Controller
             $imageName = time().".".$request->file('file')->getClientOriginalExtension();
 
             $request->file('file')->move(public_path('').'/assets/images', $imageName);
+            
 
             $activity->image =  $imageName;
         }
@@ -304,11 +302,14 @@ class ActivityController extends Controller
             $userActivity->user_id = $usersIDArray[$userID];
         }
         
-        dd($userActivity);
-        //$activity->save();
+        $activity->save();
         $userActivity->activity_id = $activity->id;
-         // $userActivity->save();
+        $userActivity->save();
         // return Redirect::route('home', [], 302, ['X-Inertia' => 'true', 'preserveState' => true]);
         //return to_route('home');
+
+        return response()->json([
+            'redirect' => route('home')
+        ]);
     }
 }

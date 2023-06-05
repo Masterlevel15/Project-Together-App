@@ -1,6 +1,7 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
 import { defineComponent } from 'vue';
+import { defineProps } from 'vue';
 import App from './App.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 
