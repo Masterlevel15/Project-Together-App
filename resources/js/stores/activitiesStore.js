@@ -15,6 +15,7 @@ export const useActivitiesStore = defineStore({
     locationFetched: false, // Indicateur pour savoir si la localisation a été récupérée
     locationCache: null, // Cache de la localisation
     fetchingLocation: null,
+    suggestions: [],
   }),
   getters: {
     getActivitiesSortedByDistance() {
@@ -78,6 +79,22 @@ export const useActivitiesStore = defineStore({
         this.getActivitiesSortedByDistance;
         this.getActivitiesSortedByDate;
       },
-      
+      async fetchSuggestions(input) {
+        try {
+          const response = await axios.get('https://api.opencagedata.com/geocode/v1/json', {
+            params: {
+              q: input,
+              key: 'baba4da692034933bcd4294f80f7654c',
+            },
+          });
+  
+          const suggestions = response.data.results.map(result => result.formatted);
+          this.suggestions = suggestions;
+          console.log(this.suggestions);
+        } catch (error) {
+          console.error(error);
+          // Gérez les erreurs de manière appropriée dans votre application.
+        }
+      },
   }
 })

@@ -1,7 +1,7 @@
 <template>
+{{searchResult}}
 <v-container class="">
    <h1 class="text-white text-4xl my-4 font-extrabold">Together</h1>
-   
    <button class="floating-element">
       <a :href="route('activity.create')">
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-white w-8 h-8 mx-auto">
@@ -13,6 +13,23 @@
    <!-- Barre de recherche -->
    <div style="display: flex; justify-content: center; margin: 0 auto;" class="mt-16 mb-12">
       <div style="width: 100%; display: flex; align-items: center; gap: 2vh;" class="pr-4 ">
+   <!-- Barre de rechercher Version ChatGPT-->
+   <div class="search-container">
+      <div class="search-input-container">
+         <input type="text" v-model="locality" placeholder="Entrez une localité"  @input="fetchSuggestions"/>
+         <button @click="searchActivities">
+            <i class="fa fa-search">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+               </svg>
+            </i>
+         </button>
+      </div>
+      <ul v-if="searchBarActive" class="absolute z-20 bg-white border border-gray-300 w-full mt-1 py-2 rounded-md shadow-md">
+            <li v-for="suggestion in suggestions" :key="suggestion" class="px-4 py-2 cursor-pointer hover:bg-gray-100"
+            @click="selectSuggestion(suggestion)">{{ suggestion }}</li>
+      </ul>
+   </div>
          <input type="text" placeholder="Rechercher" style="flex-grow: 1; border-radius: 1.75vh; background: #4C8798" class="mr-4 text-white">
          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white">
             <path fill-rule="evenodd" d="M3.792 2.938A49.069 49.069 0 0112 2.25c2.797 0 5.54.236 8.209.688a1.857 1.857 0 011.541 1.836v1.044a3 3 0 01-.879 2.121l-6.182 6.182a1.5 1.5 0 00-.439 1.061v2.927a3 3 0 01-1.658 2.684l-1.757.878A.75.75 0 019.75 21v-5.818a1.5 1.5 0 00-.44-1.06L3.13 7.938a3 3 0 01-.879-2.121V4.774c0-.897.64-1.683 1.542-1.836z" clip-rule="evenodd" />
@@ -57,7 +74,7 @@
       <h1 style="" class="text-xl mb-8 text-white font-bold ">Activités à proximité</h1>
          <v-row class="overflow-x-auto" max-width="300" style="display: flex; flex-direction: row; flex-wrap: nowrap;" align-content="center"
          >
-         <v-col  style="min-width: 45vh;" class="mb-16" v-for="activity in sortedActivitiesByDistance" :key="activity.id">
+         <v-col  style="min-width: 45vh;" class="mb-16" v-for="activity in (searchResult.length > 0 ? searchResult : sortedActivitiesByDistance)" :key="activity.id">
                <v-card
                class="mx-auto rounded-xl"
                max-width="270" 
@@ -72,7 +89,7 @@
                <div>
                   <v-chip variant="elevated" style=" position: absolute; top: 2.25vh;
                   left: 2vh; background: #f1f5f9; color: #155e75;">
-                     {{activity.activityCategoryName}}
+                     {{activity.category.name}}
                   </v-chip>
                   <div class="circle" style="position: absolute; top: 2.25vh; right: 2vh; background: #f1f5f9; color: #155e75;">
                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7" style="margin-left: 0.85vh; margin-top: 0.75vh">
@@ -86,21 +103,21 @@
                </v-img>
                <v-card-title>{{activity.title}}</v-card-title>
                <v-card-subtitle class="pt-4">
-                  City {{ activity.cityName }}
+                  City {{ activity.city.name }}
                </v-card-subtitle>
                <v-card-text prepend-icon="mdi-home">
-                  <div>User {{activity.promoter_id}}{{activity.userName}}</div>
-                  <div>Ratings {{activity.userRate}}</div>
+                  <div>User {{activity.promoter_id}}{{activity.promoter.name}}</div>
+                  <div>Ratings {{activity.promoter.rate}}</div>
                   <div class="flex items-center px-2">
-                     <svg v-for="rate in getStarRating(activity.userRate)" :key="rate.id" aria-hidden="true" class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star {{rate}}</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                     <svg v-for="notRate in getStarNotRating(activity.userRate)" :key="notRate.id" aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                     <svg v-for="rate in getStarRating(activity.promoter.rate)" :key="rate.id" aria-hidden="true" class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star {{rate}}</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                     <svg v-for="notRate in getStarNotRating(activity.promoter.rate)" :key="notRate.id" aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
                   </div>
                   <div>{{activity.participants_number}}Participant(s){{activity.distance}} </div>
                </v-card-text>
 
                <v-card-actions>
                   <v-btn color="white bg-green rounded-pill px-4 mx-auto" style="width: 18vh; height: 5.5vh">
-                         <a :href="route('activity.show', {id: activity.activityID, distance: activity.distance})">Infos {{ activity.activityID }}</a>
+                         <a :href="route('activity.show', {id: activity.id, distance: activity.distance})">Infos {{ activity.id }}</a>
                   </v-btn>
                </v-card-actions>
             </v-card>
@@ -126,7 +143,7 @@
                <div>
                   <v-chip variant="elevated" style=" position: absolute; top: 2.25vh;
                   left: 2vh; background: #f1f5f9; color: #155e75;">
-                     {{activity.activityCategoryName}}
+                     {{activity.category.name}}
                   </v-chip>
                   <div class="circle" style="position: absolute; top: 2.25vh; right: 2vh; background: #f1f5f9; color: #155e75;">
                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7" style="margin-left: 0.85vh; margin-top: 0.75vh">
@@ -140,22 +157,22 @@
                </v-img>
                <v-card-title>{{activity.title}}</v-card-title>
                <v-card-subtitle class="pt-4">
-                  City {{ activity.cityName }}
+                  City {{ activity.city.name }}
                </v-card-subtitle>
                <v-card-text prepend-icon="mdi-home">
-                  <div>User {{activity.promoter_id}}{{activity.userName}}</div>
+                  <div>User {{activity.promoter_id}}{{activity.promoter.name}}</div>
                   <div>
                      ratings
                   </div>
                   <div class="flex items-center px-2">
-                     <svg v-for="rate in getStarRating(activity.userRate)" :key="rate.id" aria-hidden="true" class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star {{rate}}</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                     <svg v-for="notRate in getStarNotRating(activity.userRate)" :key="notRate.id" aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                     <svg v-for="rate in getStarRating(activity.promoter.rate)" :key="rate.id" aria-hidden="true" class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star {{rate}}</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                     <svg v-for="notRate in getStarNotRating(activity.promoter.rate)" :key="notRate.id" aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
                   </div>   
                   <div>{{activity.participants_number}} Participant(s)</div>
                </v-card-text>
 
                <v-card-actions>
-                  <a :href="route('activity.show', {id: activity.activityID, distance: activity.distance})" class="mx-auto">
+                  <a :href="route('activity.show', {id: activity.id, distance: activity.distance})" class="mx-auto">
                   <v-btn color="white bg-green rounded-pill px-4 mx-auto" style="width: 18vh; height: 5.5vh">
                           Infos
                   </v-btn>
@@ -193,13 +210,13 @@
 <script>
   import { onMounted } from 'vue'
   import { useDisplay } from 'vuetify'
-  import { useCoordsStore } from "./../stores/coords"
-  import { usePositionStore } from "./../stores/position"
   import { useMyStore } from './../stores/store'
   import { computed, watch } from "@vue/runtime-core";
   import { Head, Link } from '@inertiajs/vue3';
   import { useActivitiesStore } from './../stores/activitiesStore';
   import { useLocationStore } from './../stores/locationStore';
+  import axios from 'axios';
+  
 
 
   export default {
@@ -235,6 +252,10 @@
       ratingActive: true,
       StarNotRating: null,
       sortedActivities: null,
+      locality: null,
+      searchBarActive: false,
+      searchResult: [],
+      activitiesSorted: [],
    }),
    methods: {
       convertFormatDate(date) {
@@ -255,67 +276,53 @@
             // console.log(activity.image);
          }
       },
-      /*
       getStarRating(userRate) {
-         // Récupère les étoiles de notation en fonction de la note de l'utilisateur
-         this.rates = [];
-         if(userRate > 0) {
+      // Récupère les étoiles de notation en fonction de la note de l'utilisateur
+         if (userRate > 0) {
             this.ratingActive = true;
-            for(let i = 0; i < userRate; i++){
-                  this.rates.push(i);
-            }
+            return Array(userRate).fill().map((_, index) => index);
+         } else {
+            return [];
          }
-         else{
-            this.rates = [];
-            for(let i = 0; i < userRate; i++){
-                  this.rates.push(i);
-            }
-         }
-         return this.rates;
-         // this.getStarNotRating(userRate);
-         
       },
       getStarNotRating(userRate) {
-         // Récupère les étoiles non notées en fonction de la note de l'utilisateur
-         this.notRates = [];
-         if(userRate > 0){
-            this.StarNotRating = 5 - userRate;
-            for(let i = 0; i < this.StarNotRating; i++){
-                  this.notRates.push(i);
-            }
+      // Récupère les étoiles non notées en fonction de la note de l'utilisateur
+         if (userRate > 0) {
+            const starNotRating = 5 - userRate;
+            return Array(starNotRating).fill().map((_, index) => index);
+         } else {
+         return Array(5).fill().map((_, index) => index);
          }
-         else{
-               this.StarNotRating = 5;
-            for(let i = 0; i < this.StarNotRating; i++){
-                  this.notRates.push(i);
-            }
-         }
-         return this.notRates;
       },
-      */
-     getStarRating(userRate) {
-  // Récupère les étoiles de notation en fonction de la note de l'utilisateur
-  if (userRate > 0) {
-    this.ratingActive = true;
-    return Array(userRate).fill().map((_, index) => index);
-  } else {
-    return [];
-  }
-},
-
-getStarNotRating(userRate) {
-  // Récupère les étoiles non notées en fonction de la note de l'utilisateur
-  if (userRate > 0) {
-    const starNotRating = 5 - userRate;
-    return Array(starNotRating).fill().map((_, index) => index);
-  } else {
-    return Array(5).fill().map((_, index) => index);
-  }
-}
+      searchActivities() {
+      // Envoyer une requête AJAX pour récupérer les activités à proximité
+      console.log(this.locality);
+      axios.get(`/api/search-activities/${this.locality}`)
+         .then(response => {
+            this.searchResult = response.data;
+         })
+         .catch(error => {
+            console.error(error);
+         });
+         console.log(this.searchResult);
+      },
+      async fetchSuggestions() {
+         if (this.locality.length > 3) {
+            await useActivitiesStore().fetchSuggestions(this.locality);
+         } 
+         this.searchBarActive = true;
+         if(this.locality === '') {
+            this.searchBarActive = false;
+         }
+      },
+      selectSuggestion(suggestion) {
+         console.log(suggestion);
+         this.locality = suggestion;
+         this.searchBarActive = false;
+      }
    },
    computed: {
       sortedActivitiesByDistance() {
-         
          const activitiesStore = useActivitiesStore();
          activitiesStore.fetchLocation();
          return activitiesStore.sort;
@@ -323,7 +330,9 @@ getStarNotRating(userRate) {
       sortedActivitiesByDate() {
          const activitiesStore = useActivitiesStore();
          return activitiesStore.sortByDate;
-         
+      },
+      suggestions() {
+         return useActivitiesStore().suggestions;
       },
    },
    created() {
@@ -375,5 +384,35 @@ getStarNotRating(userRate) {
    .search-bar-section svg{
       vertical-align: baseline;
    }
+/*Barre de recherche CHAT GPT */
+
+   .search-container {
+  position: relative;
+}
+
+.search-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-input-container input {
+  padding-right: 40px;
+  background: #4C8798;
+}
+
+.search-input-container button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 6px 10px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.fa-search{
+   color: white;
+}
    
 </style>

@@ -22,5 +22,10 @@ Route::post('/sort-activities', [App\Http\Controllers\ActivityController::class,
 
 Route::get('/activities', [App\Http\Controllers\ActivityController::class, 'getActivities']);
 
+Route::get('/search-activities/{locality}', [App\Http\Controllers\ActivityController::class, 'searchActivities']);
+
 Route::post('/activity/store', [App\Http\Controllers\ActivityController::class, 'store']);
 
+Route::group(['prefix' => 'api'], function () {
+    // Vos routes API ici
+});

@@ -29,6 +29,14 @@ class ActivityController extends Controller
     {   
     return $degrees * pi() / 180;
     }
+    private function openStreetMapAPI() {
+        $httpClient = new GuzzleClient();
+        $userAgent = 'together-app-jetstream';
+
+        $nominatim = new Nominatim($httpClient, 'https://nominatim.openstreetmap.org', $userAgent);
+        
+        return $nominatim;
+    }
     private function distanceBetweenCoordinates(Array $coords1, Array $coords2) {
         $this->distance = ACOS(SIN(self::radians($coords1['latitude']))*SIN(self::radians($coords2['latitude']))+COS(self::radians($coords1['latitude']))*COS(self::radians($coords2['latitude']))*COS(self::radians($coords1['longitude'] - $coords2['longitude'])))*6371;
         return $this->distance;
@@ -73,11 +81,8 @@ class ActivityController extends Controller
         $longitude = $request->input('longitude');
 
         // $activities = Activity::all()->toArray();
-        $this->activities = Activity::select("*", "activities.id as activityID", "activities.title as activityTitle","users.name as userName", "activities.id as activityID", "users.id as userID", "users.rate as userRate", "cities.name as cityName", "users.city_id as userCityID", "activities.city_id as activityCityID", "activities.country_id as activityCountryID", "users.country_id as userCountryID", "countries.name as activityCountryName", "categories.id as activityCategoryID", "categories.name as activityCategoryName")
-        ->join("users", "activities.promoter_id", "=", "users.id")
-        ->join("cities", "activities.city_id", "=", "cities.id")
-        ->join("countries", "countries.id", "=", "activities.country_id")->join("categories", "categories.id", "=", "activities.category_id")->get()
-        ->toArray();
+        $this->activities = Activity::with('promoter', 'category', 'country', 'city')
+        ->get();
 
         $activitiesSortByRange = [];
         foreach($this->activities as $activity) {
@@ -202,31 +207,6 @@ class ActivityController extends Controller
         $activity->created_at = now();
         $activity->updated_at = now();
 
-        // Find Country ID 
-        /*
-        $countryName = $request->input('formData')['country'];
-        $countries = Country::all()->toArray();
-        
-        foreach ($countries as $index => $country) {
-            // recherche de la valeur dans le tableau
-            if (in_array($countryName, $country)) {
-                $index++;
-                $this->countryIndex = $index;
-                // la valeur a été trouvée, on retourne l'index du tableau
-                echo "La valeur $countryName a été trouvée dans le tableau numéro $index.";
-                break;
-            }
-        }
-        if($this->countryIndex === null){
-            $country = New Country;
-            $country->name = $request->input('formData')['country'];
-            // $country->save();
-            $activity->country_id = $country->id;
-        }else{
-            $activity->country_id = $this->countryIndex;
-        }
-        */
-
         // Find Country ID
         $countryName = $request->input('country');
         $country = Country::where('name', $countryName)->first();
@@ -284,7 +264,6 @@ class ActivityController extends Controller
 
             $request->file('file')->move(public_path('').'/assets/images', $imageName);
             
-
             $activity->image =  $imageName;
         }
         // Asscocier des users à l'activité créée
@@ -296,7 +275,7 @@ class ActivityController extends Controller
         foreach($usersID as $userID) {
             array_push($usersIDArray,  $userID['id']);
         }
-        // array_push( $array,  $usersID[$i]['id']);
+
         for($i = 0; $i < $longueur; $i++) {
             $userID = mt_rand(1, $usersTableLength - 1);
             $userActivity->user_id = $usersIDArray[$userID];
@@ -305,11 +284,40 @@ class ActivityController extends Controller
         $activity->save();
         $userActivity->activity_id = $activity->id;
         $userActivity->save();
-        // return Redirect::route('home', [], 302, ['X-Inertia' => 'true', 'preserveState' => true]);
-        //return to_route('home');
 
         return response()->json([
             'redirect' => route('home')
         ]);
+    }
+    public function searchActivities($locality){
+        $nominatim = self::openStreetMapAPI();
+        $result = $nominatim->geocodeQuery(GeocodeQuery::create($locality));
+        if ($result->count() > 0) {
+            $latitude = $result->first()->getCoordinates()->getLatitude();
+            $longitude = $result->first()->getCoordinates()->getLongitude();
+        }
+        $activities = Activity::with('promoter', 'category', 'country', 'city')
+        ->get();
+
+        $activitiesSortByRange = [];
+        foreach($activities as $activity) {
+            $latitudeFromDB = $activity->latitude;
+            $longitudeFromDB = $activity->longitude;
+
+            self::distanceBetweenCoordinates(['latitude' => $latitude, 'longitude' => $longitude], ['latitude' => $latitudeFromDB,'longitude' => $longitudeFromDB]);
+            
+            $activity['distance'] = $this->distance;
+
+            if($activity['distance'] < 100) {
+                array_push($activitiesSortByRange, $activity);
+                
+            }
+        }
+        $activitiesBySearch = []; 
+        $sortedActivities = collect($activitiesSortByRange)->sortBy('distance')->toArray();
+        foreach($sortedActivities as $sortedActivity){
+            array_push($activitiesBySearch, $sortedActivity);
+        }
+        return response()->json($activitiesBySearch); 
     }
 }
