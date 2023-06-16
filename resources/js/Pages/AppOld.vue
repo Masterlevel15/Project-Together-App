@@ -1,4 +1,8 @@
 <template>
+   
+</template>
+<!--
+<template>
 <v-container class="">
    <h1>Together</h1>
    <p>Latitude : {{ latitude }}</p>
@@ -196,3 +200,5 @@ const activitiesStore = useActivitiesStore();
       font-size: 15em
    }
 </style>
+
+-->

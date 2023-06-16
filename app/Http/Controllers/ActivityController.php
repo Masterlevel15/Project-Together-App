@@ -81,7 +81,7 @@ class ActivityController extends Controller
         $longitude = $request->input('longitude');
 
         // $activities = Activity::all()->toArray();
-        $this->activities = Activity::with('promoter', 'category', 'country', 'city')
+        $this->activities = Activity::with('promoter', 'category', 'country', 'city', 'users')
         ->get();
 
         $activitiesSortByRange = [];
@@ -296,7 +296,7 @@ class ActivityController extends Controller
             $latitude = $result->first()->getCoordinates()->getLatitude();
             $longitude = $result->first()->getCoordinates()->getLongitude();
         }
-        $activities = Activity::with('promoter', 'category', 'country', 'city')
+        $activities = Activity::with('promoter', 'category', 'country', 'city', 'users')
         ->get();
 
         $activitiesSortByRange = [];

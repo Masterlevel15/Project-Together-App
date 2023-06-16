@@ -26,6 +26,6 @@ class Activity extends Model
     }
 
     public function users() {
-        return $this->belongsToMany(\App\Models\User::class);
+        return $this->belongsToMany(\App\Models\User::class, 'users_has_activities');
     }
 }

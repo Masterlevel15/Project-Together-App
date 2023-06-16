@@ -1,7 +1,8 @@
 <template>
 {{searchResult}}
+<ActivityFilter  v-if="filterActive" class="fixed inset-0 flex items-center justify-center z-50 bg-blue-lagon"/>
 <v-container class="">
-   <h1 class="text-white text-4xl my-4 font-extrabold">Together</h1>
+   <h1 class="text-slate-50 text-4xl my-4 font-extrabold">Together</h1>
    <button class="floating-element">
       <a :href="route('activity.create')">
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-white w-8 h-8 mx-auto">
@@ -11,183 +12,60 @@
    </button>
    <div v-for="test in tests" :key="test.activityID">{{test.activityCityID}} {{test.cityName}} {{test.activityCountryID}} {{test.activityCountryName}}</div>
    <!-- Barre de recherche -->
-   <div style="display: flex; justify-content: center; margin: 0 auto;" class="mt-16 mb-12">
-      <div style="width: 100%; display: flex; align-items: center; gap: 2vh;" class="pr-4 ">
+   <div class="mt-16 mb-12  mx-auto my-0">
+      <div class="pr-4 flex items-center gap-3">
    <!-- Barre de rechercher Version ChatGPT-->
-   <div class="search-container">
-      <div class="search-input-container">
-         <input type="text" v-model="locality" placeholder="Entrez une localité"  @input="fetchSuggestions"/>
-         <button @click="searchActivities">
-            <i class="fa fa-search">
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-               </svg>
-            </i>
+         <div class="search-container">
+            <div class="search-input-container">
+               <input type="text" v-model="locality" placeholder="Entrez une localité"  @input="fetchSuggestions"
+               class="rounded-lg bg-blue-gray w-64"/>
+               <button @click="searchActivities">
+                  <i class="fa fa-search">
+                  </i>
+               </button>
+            </div>
+            <ul v-if="searchBarActive" class="absolute z-20 bg-white border border-gray-300 w-full mt-1 py-2 rounded-md shadow-md">
+                  <li v-for="suggestion in suggestions" :key="suggestion" class="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                  @click="selectSuggestion(suggestion)">{{ suggestion }}</li>
+            </ul>
+         </div>
+         <!--Bouton Filtre-->
+         <button @click="initActivityFilter">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white">
+               <path fill-rule="evenodd" d="M3.792 2.938A49.069 49.069 0 0112 2.25c2.797 0 5.54.236 8.209.688a1.857 1.857 0 011.541 1.836v1.044a3 3 0 01-.879 2.121l-6.182 6.182a1.5 1.5 0 00-.439 1.061v2.927a3 3 0 01-1.658 2.684l-1.757.878A.75.75 0 019.75 21v-5.818a1.5 1.5 0 00-.44-1.06L3.13 7.938a3 3 0 01-.879-2.121V4.774c0-.897.64-1.683 1.542-1.836z" clip-rule="evenodd" />
+            </svg>
          </button>
-      </div>
-      <ul v-if="searchBarActive" class="absolute z-20 bg-white border border-gray-300 w-full mt-1 py-2 rounded-md shadow-md">
-            <li v-for="suggestion in suggestions" :key="suggestion" class="px-4 py-2 cursor-pointer hover:bg-gray-100"
-            @click="selectSuggestion(suggestion)">{{ suggestion }}</li>
-      </ul>
-   </div>
-         <input type="text" placeholder="Rechercher" style="flex-grow: 1; border-radius: 1.75vh; background: #4C8798" class="mr-4 text-white">
-         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white">
-            <path fill-rule="evenodd" d="M3.792 2.938A49.069 49.069 0 0112 2.25c2.797 0 5.54.236 8.209.688a1.857 1.857 0 011.541 1.836v1.044a3 3 0 01-.879 2.121l-6.182 6.182a1.5 1.5 0 00-.439 1.061v2.927a3 3 0 01-1.658 2.684l-1.757.878A.75.75 0 019.75 21v-5.818a1.5 1.5 0 00-.44-1.06L3.13 7.938a3 3 0 01-.879-2.121V4.774c0-.897.64-1.683 1.542-1.836z" clip-rule="evenodd" />
-         </svg>
          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white">
             <path fill-rule="evenodd" d="M8.161 2.58a1.875 1.875 0 011.678 0l4.993 2.498c.106.052.23.052.336 0l3.869-1.935A1.875 1.875 0 0121.75 4.82v12.485c0 .71-.401 1.36-1.037 1.677l-4.875 2.437a1.875 1.875 0 01-1.676 0l-4.994-2.497a.375.375 0 00-.336 0l-3.868 1.935A1.875 1.875 0 012.25 19.18V6.695c0-.71.401-1.36 1.036-1.677l4.875-2.437zM9 6a.75.75 0 01.75.75V15a.75.75 0 01-1.5 0V6.75A.75.75 0 019 6zm6.75 3a.75.75 0 00-1.5 0v8.25a.75.75 0 001.5 0V9z" clip-rule="evenodd" />
          </svg>
-
       </div>
    </div>
-   <!-- OLD Barre de recherche 
-   <v-text-field
-        density="compact"
-        variant="solo"
-        label="Search templates"
-        append-inner-icon="mdi-magnify"
-        single-line
-        hide-details
-        class="my-8"
-        style="width: 40vh;"
-   ></v-text-field>
-   -->
    <!-- Bulle categorie -->
-   <v-row class="overflow-x-auto mb-16 mt-4" max-width="300" style="display: flex; flex-direction: row; flex-wrap: nowrap;" align-content="center"
-         >
+   <v-row class="overflow-x-auto mb-16 mt-4 flex flex-nowrap pl-4" max-width="300" style="margin: 0 -2.5vh" align-content="center">
       <div v-for="category in categories" :key="category.id" style="display: flex; flex-direction: column; align-items: center; margin-right: 20px;">
          <a :href="route('activity.activitiesByCategory', {id: category.id})">
-            <div style="width: 10vh; height: 10vh; border-radius: 50%; background: red; position: relative; background-image: url('https://cdn.vuetifyjs.com/images/cards/docks.jpg'); background-size: cover;" class="mr-6 shadow-2xl"></div>
+            <div style="width: 10vh; height: 10vh; border-radius: 50%;   background-image: url('https://cdn.vuetifyjs.com/images/cards/docks.jpg'); background-size: cover;" class="mr-6 shadow-2xl"></div>
             <div  class="mt-2 text-white">{{ category.name }}</div>
          </a>
       </div>
    </v-row>
-   <!-- Ancienne version 
-   
-   <div style="display: flex; flex-direction: row;" class="mb-16" v-for="category in categories" :key="category.id">
-      <div style="width: 10vh; height: 10vh; 	border-radius: 9999px; background: red; position: relative; background-image: url('https://cdn.vuetifyjs.com/images/cards/docks.jpg'); background-size: cover;" class="text-after mr-6">
-      </div>
-      <div style="margin-top: 10px;">{{ category.name }}</div>
-   </div>
-   -->
    <div>
-      <h1 style="" class="text-xl mb-8 text-white font-bold ">Activités à proximité</h1>
-         <v-row class="overflow-x-auto" max-width="300" style="display: flex; flex-direction: row; flex-wrap: nowrap;" align-content="center"
-         >
-         <v-col  style="min-width: 45vh;" class="mb-16" v-for="activity in (searchResult.length > 0 ? searchResult : sortedActivitiesByDistance)" :key="activity.id">
-               <v-card
-               class="mx-auto rounded-xl"
-               max-width="270" 
-            >
-               <v-img
-                  class="align-end text-white"
-                  height="200"
-                  cover
-                  :src="getImage(activity.image)"
-               >
-               
-               <div>
-                  <v-chip variant="elevated" style=" position: absolute; top: 2.25vh;
-                  left: 2vh; background: #f1f5f9; color: #155e75;">
-                     {{activity.category.name}}
-                  </v-chip>
-                  <div class="circle" style="position: absolute; top: 2.25vh; right: 2vh; background: #f1f5f9; color: #155e75;">
-                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7" style="margin-left: 0.85vh; margin-top: 0.75vh">
-                     <path stroke-linecap="round" class="icon" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-                     </svg>
-                  </div>
-                  <v-chip variant="elevated" style="position: absolute; bottom: 2.25vh; right: 2vh; background: #f1f5f9; color: #155e75;">
-                     Date {{this.convertFormatDate(activity.date)}}
-                  </v-chip>
-               </div>
-               </v-img>
-               <v-card-title>{{activity.title}}</v-card-title>
-               <v-card-subtitle class="pt-4">
-                  City {{ activity.city.name }}
-               </v-card-subtitle>
-               <v-card-text prepend-icon="mdi-home">
-                  <div>User {{activity.promoter_id}}{{activity.promoter.name}}</div>
-                  <div>Ratings {{activity.promoter.rate}}</div>
-                  <div class="flex items-center px-2">
-                     <svg v-for="rate in getStarRating(activity.promoter.rate)" :key="rate.id" aria-hidden="true" class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star {{rate}}</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                     <svg v-for="notRate in getStarNotRating(activity.promoter.rate)" :key="notRate.id" aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                  </div>
-                  <div>{{activity.participants_number}}Participant(s){{activity.distance}} </div>
-               </v-card-text>
-
-               <v-card-actions>
-                  <v-btn color="white bg-green rounded-pill px-4 mx-auto" style="width: 18vh; height: 5.5vh">
-                         <a :href="route('activity.show', {id: activity.id, distance: activity.distance})">Infos {{ activity.id }}</a>
-                  </v-btn>
-               </v-card-actions>
-            </v-card>
-         </v-col>
-      </v-row>
+      <h1 style="" class="text-xl mb-8 text-white font-black">Activités à proximité</h1>
+      <ActivityCard :activities="(searchResult.length > 0 ? searchResult : sortedActivitiesByDistance)"/>
    </div>
    <div>
       <h1 style="" class="text-xl mb-8 text-white font-bold mt-8">Prochaines activités</h1>
-         <v-row class="overflow-x-auto" max-width="300" style="display: flex; flex-direction: row; flex-wrap: nowrap;" align-content="center"
-         >
-         <v-col  style="min-width: 45vh;" v-for="activity in sortedActivitiesByDate" :key="activity.id">
-               <v-card
-               class="mx-auto rounded-lg"
-               max-width="270"
-            >
-               <v-img
-                  class="align-end text-white"
-                  height="200"
-                  :src="getImage(activity.image)"
-                  cover
-               >
-               
-               <div>
-                  <v-chip variant="elevated" style=" position: absolute; top: 2.25vh;
-                  left: 2vh; background: #f1f5f9; color: #155e75;">
-                     {{activity.category.name}}
-                  </v-chip>
-                  <div class="circle" style="position: absolute; top: 2.25vh; right: 2vh; background: #f1f5f9; color: #155e75;">
-                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7" style="margin-left: 0.85vh; margin-top: 0.75vh">
-                     <path stroke-linecap="round" class="icon" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-                     </svg>
-                  </div>
-                  <v-chip variant="elevated" style="position: absolute; bottom: 2.25vh; right: 2vh; background: #f1f5f9; color: #155e75;">
-                     Date {{this.convertFormatDate(activity.date)}}
-                  </v-chip>
-               </div>
-               </v-img>
-               <v-card-title>{{activity.title}}</v-card-title>
-               <v-card-subtitle class="pt-4">
-                  City {{ activity.city.name }}
-               </v-card-subtitle>
-               <v-card-text prepend-icon="mdi-home">
-                  <div>User {{activity.promoter_id}}{{activity.promoter.name}}</div>
-                  <div>
-                     ratings
-                  </div>
-                  <div class="flex items-center px-2">
-                     <svg v-for="rate in getStarRating(activity.promoter.rate)" :key="rate.id" aria-hidden="true" class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star {{rate}}</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                     <svg v-for="notRate in getStarNotRating(activity.promoter.rate)" :key="notRate.id" aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                  </div>   
-                  <div>{{activity.participants_number}} Participant(s)</div>
-               </v-card-text>
-
-               <v-card-actions>
-                  <a :href="route('activity.show', {id: activity.id, distance: activity.distance})" class="mx-auto">
-                  <v-btn color="white bg-green rounded-pill px-4 mx-auto" style="width: 18vh; height: 5.5vh">
-                          Infos
-                  </v-btn>
-                  </a>
-               </v-card-actions>
-            </v-card>
-         </v-col>
-      </v-row>
+      <ActivityCard :activities=" sortedActivitiesByDate"
+      />
    </div>
    <div style="position: fixed; bottom: 0; left: 0; right: 0; background-color: #fff; display: flex; justify-content: space-between; padding: 17px;">
+   <a :href="route('activity.map')">
    <v-icon class="ml-2">
        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
       </svg>
    </v-icon>
+   </a>
    <v-icon>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
@@ -216,6 +94,8 @@
   import { useActivitiesStore } from './../stores/activitiesStore';
   import { useLocationStore } from './../stores/locationStore';
   import axios from 'axios';
+  import ActivityFilter from './Activity/ActivityFilter.vue';
+  import ActivityCard from '../Components/ActivityCard.vue';
   
 
 
@@ -234,66 +114,17 @@
       categories: Array,
    },
    components: {
+      ActivityFilter,
+      ActivityCard
    },
    data: () => ({
-      location: null,
-      position: null,
-      coords: null,
-      latitude: null,
-      longitude: null,
-      jsonData: null,
-      activityDate: null,
-      month: ["January", "February", "March", "April", "May", "June", 
-           "July", "August", "September", "October", "November", "December"],
-      activitiesSortByDistance: null,
-      image: null,
-      rates: [],
-      notRates: [],
-      ratingActive: true,
-      StarNotRating: null,
-      sortedActivities: null,
       locality: null,
       searchBarActive: false,
       searchResult: [],
       activitiesSorted: [],
+      filterActive: false,
    }),
    methods: {
-      convertFormatDate(date) {
-         // Convertit un format de date en un autre format avec des chaînes de caractères. En parcourant un tableau avec le nom de chaque mois. 
-         let numericDate = date.split(' ', 1);
-         let numericDateSplit = numericDate.map(el => el.split('-', 3));
-         return numericDateSplit[0][2] +' '+this.month[numericDateSplit[0][1].slice(1)] +' '+ numericDateSplit[0][0];
-
-      },
-      getImage(image) {
-         // Récupère l'URL de l'image en fonction du paramètre 'image'. Si la valeur image n'est pas null dans la db alors on charge cette image.
-         if(image !== null) {
-            return 'assets/images/'+ image;
-            // console.log(activity.image);
-         }
-         else{
-            return 'https://cdn.vuetifyjs.com/images/cards/docks.jpg';
-            // console.log(activity.image);
-         }
-      },
-      getStarRating(userRate) {
-      // Récupère les étoiles de notation en fonction de la note de l'utilisateur
-         if (userRate > 0) {
-            this.ratingActive = true;
-            return Array(userRate).fill().map((_, index) => index);
-         } else {
-            return [];
-         }
-      },
-      getStarNotRating(userRate) {
-      // Récupère les étoiles non notées en fonction de la note de l'utilisateur
-         if (userRate > 0) {
-            const starNotRating = 5 - userRate;
-            return Array(starNotRating).fill().map((_, index) => index);
-         } else {
-         return Array(5).fill().map((_, index) => index);
-         }
-      },
       searchActivities() {
       // Envoyer une requête AJAX pour récupérer les activités à proximité
       console.log(this.locality);
@@ -319,8 +150,11 @@
          console.log(suggestion);
          this.locality = suggestion;
          this.searchBarActive = false;
-      }
-   },
+      },
+      initActivityFilter() {
+         this.filterActive = true;
+      },
+   }, 
    computed: {
       sortedActivitiesByDistance() {
          const activitiesStore = useActivitiesStore();
@@ -355,8 +189,8 @@
 
    }
    .circle{
-      width: 6vh;
-      height: 6vh;
+      width: 5.5vh;
+      height: 5.5vh;
       background: white;
       border-radius: 50%;
    }
@@ -414,5 +248,12 @@
 .fa-search{
    color: white;
 }
-   
+
+.search-input-container input::placeholder{
+   color: #A2C1CB;
+}
+
+span.category-name {
+   font-weight: 900;
+}
 </style>

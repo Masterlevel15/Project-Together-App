@@ -44,6 +44,11 @@ Route::get('/store', [\App\Http\Controllers\ActivityController::class, 'store'])
 Route::get('/activity/category/{id}', [\App\Http\Controllers\ActivityController::class, 'findActivitiesByCategory'])
 ->name('activity.activitiesByCategory');
 
+//Route vers la map avec les activités
+Route::get('/map', function () {
+    return Inertia::render('Activity/ActivitiesMap', ['activities' => App\Models\Activity::all()]);
+})->name('activity.map');
+
 // Route lorsque l'utilisateur est connecté
 Route::middleware([
     'auth:sanctum',

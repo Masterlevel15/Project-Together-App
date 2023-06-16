@@ -61,7 +61,7 @@ class User extends Authenticatable
     ];
 
     public function activities() {
-        return $this->belongsToMany(\App\Models\Activity::class);
+        return $this->belongsToMany(\App\Models\Activity::class, 'users_has_activities');
     }
 
     public function categories() {
