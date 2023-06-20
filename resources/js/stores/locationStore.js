@@ -11,8 +11,8 @@ export const useLocationStore = defineStore('location', () => {
 */
 
 // location.js
-
 import { defineStore } from 'pinia';
+
 
 export const useLocationStore = defineStore('location', {
   state: () => ({

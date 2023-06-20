@@ -1,15 +1,14 @@
 <template>
-{{searchResult}}
 <ActivityFilter  v-if="filterActive" class="fixed inset-0 flex items-center justify-center z-50 bg-blue-lagon"/>
 <v-container class="">
    <h1 class="text-slate-50 text-4xl my-4 font-extrabold">Together</h1>
-   <button class="floating-element">
+   <!--<button class="floating-element">
       <a :href="route('activity.create')">
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-white w-8 h-8 mx-auto">
          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
          </svg>
       </a>
-   </button>
+   </button>-->
    <div v-for="test in tests" :key="test.activityID">{{test.activityCityID}} {{test.cityName}} {{test.activityCountryID}} {{test.activityCountryName}}</div>
    <!-- Barre de recherche -->
    <div class="mt-16 mb-12  mx-auto my-0">
@@ -18,16 +17,22 @@
          <div class="search-container">
             <div class="search-input-container">
                <input type="text" v-model="locality" placeholder="Entrez une localité"  @input="fetchSuggestions"
+               @keydown.delete="handleDelete"
                class="rounded-lg bg-blue-gray w-64"/>
                <button @click="searchActivities">
                   <i class="fa fa-search">
                   </i>
                </button>
             </div>
-            <ul v-if="searchBarActive" class="absolute z-20 bg-white border border-gray-300 w-full mt-1 py-2 rounded-md shadow-md">
-                  <li v-for="suggestion in suggestions" :key="suggestion" class="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                  @click="selectSuggestion(suggestion)">{{ suggestion }}</li>
-            </ul>
+            <div v-if='suggestions'>
+               <ul v-if="searchBarActive" class="absolute z-20 bg-white border border-gray-300 w-full mt-1 py-2 rounded-md shadow-md">
+                     <li v-for="suggestion in suggestions" :key="suggestion" class="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                     @click="selectSuggestion(suggestion)">{{ suggestion }}</li>
+                     <div v-if="suggestions.length ===  0 || locality.length < 3" class="flex justify-center items-center mx-auto h-12">
+                           <i class="fa-solid fa-spinner fa-spin-pulse"></i>
+                     </div>
+               </ul>
+            </div>
          </div>
          <!--Bouton Filtre-->
          <button @click="initActivityFilter">
@@ -50,13 +55,15 @@
       </div>
    </v-row>
    <div>
-      <h1 style="" class="text-xl mb-8 text-white font-black">Activités à proximité</h1>
-      <ActivityCard :activities="(searchResult.length > 0 ? searchResult : sortedActivitiesByDistance)"/>
-   </div>
-   <div>
-      <h1 style="" class="text-xl mb-8 text-white font-bold mt-8">Prochaines activités</h1>
-      <ActivityCard :activities=" sortedActivitiesByDate"
-      />
+      <div>
+         <h1 style="" class="text-xl mb-8 text-white font-black">Activités à proximité</h1>
+         <ActivityCard :loading="loading" :activities="(searchResult.length > 0 ? searchResult : sortedActivitiesByDistance)"/>
+      </div>
+      <div>
+         <h1 style="" class="text-xl mb-8 text-white font-bold mt-8">Prochaines activités</h1>
+         <ActivityCard :loading="loading" :activities=" sortedActivitiesByDate"
+         />
+      </div>
    </div>
    <div style="position: fixed; bottom: 0; left: 0; right: 0; background-color: #fff; display: flex; justify-content: space-between; padding: 17px;">
    <a :href="route('activity.map')">
@@ -138,9 +145,12 @@
          console.log(this.searchResult);
       },
       async fetchSuggestions() {
-         if (this.locality.length > 3) {
+         if ((this.locality === null || this.locality === '') && this.locality.length > 3) {
+         // Si la valeur de l'input est vide, réinitialiser les suggestions à une valeur vide
+            this.suggestions = [];
+         } else {
             await useActivitiesStore().fetchSuggestions(this.locality);
-         } 
+         }
          this.searchBarActive = true;
          if(this.locality === '') {
             this.searchBarActive = false;
@@ -150,6 +160,11 @@
          console.log(suggestion);
          this.locality = suggestion;
          this.searchBarActive = false;
+      },
+      handleDelete(event) {
+         // Mettre à jour les suggestions lorsque l'utilisateur supprime des caractères de la recherche
+            this.suggestions = [];
+            this.fetchSuggestions();
       },
       initActivityFilter() {
          this.filterActive = true;
@@ -164,6 +179,10 @@
       sortedActivitiesByDate() {
          const activitiesStore = useActivitiesStore();
          return activitiesStore.sortByDate;
+      },
+      loading() {
+         const activitiesStore = useActivitiesStore();
+         return activitiesStore.loading;
       },
       suggestions() {
          return useActivitiesStore().suggestions;

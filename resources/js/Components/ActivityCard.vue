@@ -1,5 +1,5 @@
 <template>
-    <v-row class="overflow-x-auto flex flex-nowrap"  style="margin: 0 -2.3vh" align-content="center"
+    <v-row v-if="loading" class="overflow-x-auto flex flex-nowrap"  style="margin: 0 -2.3vh" align-content="center"
          >
          <v-col  style="min-width: 50vh;" class="mb-16" v-for="activity in activities" :key="activity.id">
                <v-card
@@ -60,6 +60,7 @@
             </v-card>
          </v-col>
       </v-row>
+      <Loader v-else class="fixed inset-0 flex items-center justify-center z-50 bg-gradient-to-b from-blue-light to-blue-dark"/>
 </template>
 
 <script>
@@ -71,6 +72,7 @@
   import { useActivitiesStore } from './../stores/activitiesStore';
   import { useLocationStore } from './../stores/locationStore';
   import axios from 'axios';
+  import Loader from './Loader.vue';
 
   
 
@@ -88,8 +90,10 @@
       activities: Array,
       tests: Array,
       categories: Array,
+      loading: Boolean,
    },
    components: {
+      Loader,
    },
    data: () => ({
       month: ["January", "February", "March", "April", "May", "June", 
