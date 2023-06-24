@@ -15,11 +15,17 @@ module.exports = {
             colors: {
                 'blue-lagon': '#EBF4F5',
                 'blue-light': '#7BBFBF',
+                'blue-light2': '#B4D9D9',
+                'blue-light3': '#CEE7E7',
                 'blue-dark': '#5299BC',
+                'blue-dark2': '#4B8799',
                 'blue-gray': '#4C8798',
                 'blue-card-background': '#4D8798',
                 'green': '#00CA8A',
                 'green2':'#03CB8B',
+                
+                
+                
             },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],

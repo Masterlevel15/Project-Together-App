@@ -1,7 +1,8 @@
 <template>
     <v-row v-if="loading" class="overflow-x-auto flex flex-nowrap"  style="margin: 0 -2.3vh" align-content="center"
          >
-         <v-col  style="min-width: 50vh;" class="mb-16" v-for="activity in activities" :key="activity.id">
+         <v-col  style="min-width: 50vh;" class="mb-16" v-for="activity in (activitiesSortedByFilter.length > 0 ? activitiesSortedByFilter : activities)" :key="activity.id">
+            
                <v-card
                class="mx-auto rounded-xl"
                max-width="320" 
@@ -88,6 +89,7 @@
    },
    props:{
       activities: Array,
+      activitiesSortedByFilter: Array,
       tests: Array,
       categories: Array,
       loading: Boolean,

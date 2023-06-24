@@ -1,7 +1,10 @@
 <template>
-<ActivityFilter  v-if="filterActive" class="fixed inset-0 flex items-center justify-center z-50 bg-blue-lagon"/>
+<ActivityFilter @activitiesSortedByFilter="getActivitiesSortedByFilter" v-if="filterActive" class=""
+:categories="categories"/>
 <v-container class="">
    <h1 class="text-slate-50 text-4xl my-4 font-extrabold">Together</h1>
+   <div v-for="activity in activitiesSortedByFilterValues" :key="activity.id">{{activity.id}}</div>
+   
    <!--<button class="floating-element">
       <a :href="route('activity.create')">
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-white w-8 h-8 mx-auto">
@@ -57,11 +60,13 @@
    <div>
       <div>
          <h1 style="" class="text-xl mb-8 text-white font-black">Activités à proximité</h1>
-         <ActivityCard :loading="loading" :activities="(searchResult.length > 0 ? searchResult : sortedActivitiesByDistance)"/>
+         <ActivityCard :loading="loading" :activities="(searchResult.length > 0 ? searchResult : sortedActivitiesByDistance)"
+         :activitiesSortedByFilter="activitiesSortedByFilterValues" />
       </div>
       <div>
          <h1 style="" class="text-xl mb-8 text-white font-bold mt-8">Prochaines activités</h1>
          <ActivityCard :loading="loading" :activities=" sortedActivitiesByDate"
+         :activitiesSortedByFilter="activitiesSortedByFilterValues"
          />
       </div>
    </div>
@@ -128,7 +133,8 @@
       locality: null,
       searchBarActive: false,
       searchResult: [],
-      activitiesSorted: [],
+      activitiesSortedByFilter: [],
+      activitiesSortedByFilterValues: [],
       filterActive: false,
    }),
    methods: {
@@ -168,6 +174,16 @@
       },
       initActivityFilter() {
          this.filterActive = true;
+      },
+      getActivitiesSortedByFilter(data) {
+         this.activitiesSortedByFilter = data.activities;
+         // On récupère les valeurs de l'objet pour 
+         this.activitiesSortedByFilterValues = Object.values(this.activitiesSortedByFilter);
+         if (!Array.isArray(this.activitiesSortedByFilterValues)) {
+         return [];
+         }
+         this.filterActive = data.filterActive;
+         console.log(data);
       },
    }, 
    computed: {

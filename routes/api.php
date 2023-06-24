@@ -24,6 +24,8 @@ Route::get('/activities', [App\Http\Controllers\ActivityController::class, 'getA
 
 Route::get('/search-activities/{locality}', [App\Http\Controllers\ActivityController::class, 'searchActivities']);
 
+Route::post('/activity-filter', [App\Http\Controllers\ActivityController::class, 'searchActivitiesByFilter']);
+
 Route::post('/activity/store', [App\Http\Controllers\ActivityController::class, 'store']);
 
 Route::group(['prefix' => 'api'], function () {

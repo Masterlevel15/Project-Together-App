@@ -79,7 +79,11 @@ class ActivityController extends Controller
     public function sortActivitiesWithDistances(Request $request) {
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
-
+        if($request->input('distance') !== null && (int)$request->input('distance') !== 0){
+            $distance = (int)$request->input('distance');
+        }else{
+            $distance = 200;
+        }
         // $activities = Activity::all()->toArray();
         $this->activities = Activity::with('promoter', 'category', 'country', 'city', 'users')
         ->get();
@@ -92,13 +96,23 @@ class ActivityController extends Controller
             self::distanceBetweenCoordinates(['latitude' => $latitude, 'longitude' => $longitude], ['latitude' => $latitudeFromDB,'longitude' => $longitudeFromDB]);
 
             $activity['distance'] = $this->distance;
-            if($activity['distance'] < 200) {
+            if($activity['distance'] < $distance) {
                 array_push($activitiesSortByRange, $activity);
             }
         }
         $this->sortedActivities = collect($activitiesSortByRange)->sortBy('distance')->toArray();
         
-         return response()->json(['activitiesSortByDistance' => $this->sortedActivities, 'activities' =>  $this->activities]);
+        if($request->input('distance') !== null){
+            $activitiesByFilter = []; 
+            $sortedActivities = collect($activitiesSortByRange)->sortBy('distance')->toArray();
+            foreach($sortedActivities as $sortedActivity){
+                array_push($activitiesByFilter, $sortedActivity);
+            }
+            return $activitiesByFilter;
+        }else{
+            return response()->json(['activitiesSortByDistance' => $this->sortedActivities, 'activities' =>  $this->activities]);
+        }
+         
     }
 
     public function getActivities() {
@@ -289,7 +303,7 @@ class ActivityController extends Controller
             'redirect' => route('home')
         ]);
     }
-    public function searchActivities($locality){
+    public function searchActivities($locality, $distance = 100){
         $nominatim = self::openStreetMapAPI();
         $result = $nominatim->geocodeQuery(GeocodeQuery::create($locality));
         if ($result->count() > 0) {
@@ -308,7 +322,7 @@ class ActivityController extends Controller
             
             $activity['distance'] = $this->distance;
 
-            if($activity['distance'] < 100) {
+            if($activity['distance'] < $distance) {
                 array_push($activitiesSortByRange, $activity);
                 
             }
@@ -318,6 +332,63 @@ class ActivityController extends Controller
         foreach($sortedActivities as $sortedActivity){
             array_push($activitiesBySearch, $sortedActivity);
         }
-        return response()->json($activitiesBySearch); 
+        return $activitiesBySearch; 
+    }
+    public function searchActivitiesByFilter(Request $request) {
+        // return $this->sortActivitiesWithDistances($request);
+        $locality = $request->locality; 
+        $distance = (int)$request->distance;
+        $sortingSettings = $request->sortingSettings;
+        $categories = $request->categories;
+        $result = null;
+        // Envoi de la réponse $categories sous forme de tableau
+        $categoriesExplode = explode(',', $categories);
+        $categoriesName = [];
+        foreach($categoriesExplode as $category){
+            array_push($categoriesName, $category);
+        }
+        // Dans le cas où une ou plusieurs catégories ont été sélectionnées si le $distance a été modifié il sera pris en compte sinon ce sera la a valeur par défaut.
+
+        if($categories !== null && $locality !== null){
+            $activitiesByLocality;
+            if($distance === 0){
+                $activitiesByLocality = $this->searchActivities($locality, $distance = 100);
+            }
+            else{
+                $activitiesByLocality = $this->searchActivities($locality, $distance);
+            }
+            $activitiesFilterByCategory = [];
+            $activities = $activitiesByLocality;
+            foreach($activities as $activity) {
+                if(in_array($activity['category']['name'], $categoriesName)){
+                    array_push($activitiesFilterByCategory, $activity);
+                }
+            }
+            $result = $activitiesFilterByCategory;
+            dd($result);
+        }
+        else if($categories !== null){
+            $activitiesFilterByCategory = [];
+            $activities = $this->sortActivitiesWithDistances($request);
+            foreach($activities as $activity) {
+                if(in_array($activity['category']['name'], $categoriesName)){
+                    array_push($activitiesFilterByCategory, $activity);
+                }
+            }
+            $result = $activitiesFilterByCategory;
+            dd($result);
+        }else if($locality !== null){
+            dd('locality' );
+            if($distance === 0){
+                $activitiesFilterByLocality = $this->searchActivities($locality, $distance = 100);
+            }
+            else{
+                $activitiesFilterByLocality = $this->searchActivities($locality, $distance);
+            }
+            $result = $activitiesFilterByLocality;
+        }else if($distance > 0 && $locality === null && $categories === null){
+            $result = $this->sortActivitiesWithDistances($request);
+            dd($result);
+        }
     }
 }

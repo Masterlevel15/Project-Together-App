@@ -17,6 +17,8 @@ export const useActivitiesStore = defineStore({
     fetchingLocation: null,
     suggestions: [],
     loading: false,
+    distance: null,
+    response: null,
   }),
   getters: {
     getActivitiesSortedByDistance() {
@@ -75,9 +77,10 @@ export const useActivitiesStore = defineStore({
       async fetchActivities(latitude, longitude) {
         // Méthode pour configurer la récupération des activités avec une latitude et une longitude spécifiques
         this.loading = true;
-        const response = await axios.post('/api/sort-activities', { latitude, longitude });
-        this.activitiesSortByDistance = response.data.activitiesSortByDistance;
-        this.activities = response.data.activities;
+        this.response = await axios.post('/api/sort-activities', { latitude, longitude });
+        
+        this.activitiesSortByDistance = this.response.data.activitiesSortByDistance;
+        this.activities = this.response.data.activities;
         this.getActivitiesSortedByDistance;
         this.getActivitiesSortedByDate;
       },

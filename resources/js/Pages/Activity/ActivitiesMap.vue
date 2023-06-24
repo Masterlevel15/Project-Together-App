@@ -89,6 +89,7 @@ export default {
                     const { latitude, longitude } = position.coords;
                     // Mettez à jour la position de l'utilisateur sur la carte
                     // ...
+                    console.log('test');
                     if (!this.userMarker) {
                         this.userMarker = L.marker([latitude, longitude], { icon: this.customMarkerIcon }).addTo(this.map);
                     } else {
