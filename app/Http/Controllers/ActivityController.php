@@ -348,7 +348,6 @@ class ActivityController extends Controller
             array_push($categoriesName, $category);
         }
         // Dans le cas où une ou plusieurs catégories ont été sélectionnées si le $distance a été modifié il sera pris en compte sinon ce sera la a valeur par défaut.
-
         if($categories !== null && $locality !== null){
             $activitiesByLocality;
             if($distance === 0){
@@ -365,7 +364,6 @@ class ActivityController extends Controller
                 }
             }
             $result = $activitiesFilterByCategory;
-            dd($result);
         }
         else if($categories !== null){
             $activitiesFilterByCategory = [];
@@ -376,19 +374,20 @@ class ActivityController extends Controller
                 }
             }
             $result = $activitiesFilterByCategory;
-            dd($result);
         }else if($locality !== null){
-            dd('locality' );
             if($distance === 0){
                 $activitiesFilterByLocality = $this->searchActivities($locality, $distance = 100);
             }
-            else{
+            else{   
                 $activitiesFilterByLocality = $this->searchActivities($locality, $distance);
             }
             $result = $activitiesFilterByLocality;
         }else if($distance > 0 && $locality === null && $categories === null){
             $result = $this->sortActivitiesWithDistances($request);
-            dd($result);
         }
+        else{
+            return true;        
+        }
+        return $result;
     }
 }

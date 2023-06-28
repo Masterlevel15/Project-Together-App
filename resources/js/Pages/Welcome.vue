@@ -2,6 +2,7 @@
 import { Head, Link } from '@inertiajs/vue3';
 import { defineComponent } from 'vue';
 import { defineProps } from 'vue';
+import { reactive, ref } from 'vue';
 import App from './App.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 
@@ -13,11 +14,19 @@ defineProps({
     categories: Array,
 });
 
+const data = reactive({
+  isActive: false,
+});
+
+const settingFilterState = (setting) => {
+    data.isActive = setting;
+};
 
 </script>
 
 <template>
-    <div class="bg-gradient-to-b from-blue-light to-blue-dark" style="min-height: 270vh;">
+    <div class="bg-gradient-to-b from-blue-light to-blue-dark" 
+    :class="{ 'min-h-[170vh]': data.isActive, 'min-h-[270vh]': !data.isActive }">
         <div v-if="canLogin" class="sm:fixed sm:top-0 sm:right-0 p-6 text-right text-color">
             <Link v-if="$page.props.auth.user" href="/" class="font-semibold">
             <!-- Section gestion et déconnexions-->
@@ -41,7 +50,7 @@ defineProps({
             </template>
         </div>
         <!-- Ajout de la vue app dans la vue Welcome -->
-        <App :categories="this.categories" />
+        <App @settingFilterActive="settingFilterState" :categories="this.categories" />
     </div>
 </template>
 

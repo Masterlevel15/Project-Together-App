@@ -6,6 +6,7 @@ export const useActivitiesStore = defineStore({
   id: 'activities',
   state: () => ({
     activities: [], // Liste des activités
+    activitiesSortByFilter: Array,
     activitiesSortByDistance: [], // Liste des activités triées par distance
     activitiesValues: [], // Valeurs des activités
     latitude: null, // Latitude actuelle
@@ -13,7 +14,7 @@ export const useActivitiesStore = defineStore({
     sort: Array, // Tableau de tri par distance
     sortByDate: Array, // Tableau de tri par date
     locationFetched: false, // Indicateur pour savoir si la localisation a été récupérée
-    locationCache: null, // Cache de la localisation
+    locationCache: Array, // Cache de la localisation
     fetchingLocation: null,
     suggestions: [],
     loading: false,
@@ -28,8 +29,11 @@ export const useActivitiesStore = defineStore({
         return [];
       }
       this.sort = this.activitiesValues.sort((a, b) => a['distance'] - b['distance']);
-        return this.sort;
-      },
+      this.updateActivities(this.sort);
+      this.updateDistance(200);
+      return this.sort;
+    },
+      
     getActivitiesSortedByDate() {
       // Getter pour obtenir les activités triées par date
       this.activitiesValues = Object.values(this.activitiesSortByDistance);
@@ -39,7 +43,16 @@ export const useActivitiesStore = defineStore({
       this.sortByDate = [...this.activitiesValues];
       this.sortByDate.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
       return this.sortByDate;
-      
+    },
+    getActivities() {
+      const storedActivities = localStorage.getItem('activities');
+      this.activitiesSortByFilter = JSON.parse(storedActivities);
+      return this.activitiesSortByFilter;
+    },
+    getDistance() {
+      const storedDistance = localStorage.getItem('distance');
+      this.distance = JSON.parse(storedDistance);
+      return Number(this.distance);
     }
   },
   actions: {
@@ -101,6 +114,20 @@ export const useActivitiesStore = defineStore({
           console.error(error);
           // Gérez les erreurs de manière appropriée dans votre application.
         }
+      },
+      updateActivities(activities) {
+        console.log(activities);
+        localStorage.setItem('activities', JSON.stringify(activities));
+        this.activitiesSortByFilter = activities;
+        return this.activitiesSortByFilter;
+       
+      },
+      updateDistance(distance){
+        console.log(distance);
+        localStorage.setItem('distance', JSON.stringify(distance));
+        this.distance = distance;
+        return this.distance;
+        
         
       },
   },

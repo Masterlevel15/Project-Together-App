@@ -134,7 +134,6 @@ export default {
                                 } else {
                                         this.activeSortingSettings.splice(index, 1);
                                 }
-
                         }
                 },
                 strToUpperCase(item) {
@@ -166,7 +165,6 @@ export default {
                         filterData.append('distance', this.distance);
                         filterData.append('sortingSettings', this.activeSortingSettings);
                         filterData.append('categories', this.activeCategories);
-
                         // je fais appel au store pour récupérer la latitude et la longitude pour ensuite pouvoir envoyer ces données dans le back et gérer des fonctions qui nécessitent ces paramètres.
                         const activitiesStore = useActivitiesStore();
                         filterData.append('latitude', activitiesStore.latitude);
@@ -175,8 +173,9 @@ export default {
                         axios.post('/api/activity-filter', filterData)
                         .then(response => {
                         // handle success
-                        console.log(response.data);
-                        // this.$emit('activitiesSortedByFilter', {activities: response.data, filterActive: false})
+                         this.$emit('activitiesSortedByFilter', {activities: response.data, filterActive: false, settings: this.activeSortingSettings })
+                         useActivitiesStore().updateActivities(response.data);
+                         useActivitiesStore().updateDistance(this.distance);
                         //window.location.href = 'http://localhost:8080/';
                         })
                         .catch(error => {
@@ -190,7 +189,6 @@ export default {
                         this.categories.forEach((category) => {
                                 this.categoriesName.push(category['name']);
                         })
-                        console.log(this.categoriesName);
                 }
         },
         created() {

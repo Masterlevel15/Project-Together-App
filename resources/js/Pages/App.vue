@@ -3,8 +3,6 @@
 :categories="categories"/>
 <v-container class="">
    <h1 class="text-slate-50 text-4xl my-4 font-extrabold">Together</h1>
-   <div v-for="activity in activitiesSortedByFilterValues" :key="activity.id">{{activity.id}}</div>
-   
    <!--<button class="floating-element">
       <a :href="route('activity.create')">
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-white w-8 h-8 mx-auto">
@@ -58,20 +56,20 @@
       </div>
    </v-row>
    <div>
-      <div>
+      <div v-if="distanceFilterActive">
          <h1 style="" class="text-xl mb-8 text-white font-black">Activités à proximité</h1>
          <ActivityCard :loading="loading" :activities="(searchResult.length > 0 ? searchResult : sortedActivitiesByDistance)"
          :activitiesSortedByFilter="activitiesSortedByFilterValues" />
       </div>
-      <div>
+      <div v-if="dateFilterActive">
          <h1 style="" class="text-xl mb-8 text-white font-bold mt-8">Prochaines activités</h1>
          <ActivityCard :loading="loading" :activities=" sortedActivitiesByDate"
-         :activitiesSortedByFilter="activitiesSortedByFilterValues"
+         :activitiesSortedByFilter="activitiesSortedByDate"
          />
       </div>
    </div>
    <div style="position: fixed; bottom: 0; left: 0; right: 0; background-color: #fff; display: flex; justify-content: space-between; padding: 17px;">
-   <a :href="route('activity.map')">
+   <a  :href="route('activity.map')">
    <v-icon class="ml-2">
        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
@@ -136,6 +134,10 @@
       activitiesSortedByFilter: [],
       activitiesSortedByFilterValues: [],
       filterActive: false,
+      activitiesSortedByDate: [],
+      dateFilterActive: true,
+      distanceFilterActive: true,
+      settingFilterActive: true,
    }),
    methods: {
       searchActivities() {
@@ -175,7 +177,7 @@
       initActivityFilter() {
          this.filterActive = true;
       },
-      getActivitiesSortedByFilter(data) {
+      async getActivitiesSortedByFilter(data) {
          this.activitiesSortedByFilter = data.activities;
          // On récupère les valeurs de l'objet pour 
          this.activitiesSortedByFilterValues = Object.values(this.activitiesSortedByFilter);
@@ -183,8 +185,52 @@
          return [];
          }
          this.filterActive = data.filterActive;
-         console.log(data);
+         this.sortActivitiesByDate(data.activities);
+         this.sortingSettings(data.settings);
+         // this.updateActivitiesToPiniaStore(data.activities);
       },
+      sortingSettings(settings) {
+         if(settings.includes('date') && settings.includes('distance')){
+            console.log('date et distance');
+            this.dateFilterActive = true;
+            this.distanceFilterActive = true;
+            this.settingFilterActive = false;
+         }
+         else if(settings.includes('date')) {
+            console.log('date');
+            this.dateFilterActive = true;
+            this.distanceFilterActive = false;
+            this.settingFilterActive = true;
+         }
+         else if (settings.includes('distance')){
+            console.log('distance');
+            this.distanceFilterActive = true;
+            this.dateFilterActive = false;
+            this.settingFilterActive = true;
+         }
+        this.$emit('settingFilterActive', this.settingFilterActive);
+      },
+      sortActivitiesByDate(activities) {
+         this.activitiesSortedByDate = activities.slice().sort((a, b) => {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            return dateB - dateA; // Trie dans l'ordre croissant (de la plus ancienne à la plus récente)
+         });
+      },
+      async updateActivitiesToPiniaStore(items) {
+        
+         if(this.activitiesSortedByFilterValues.length > 0){
+            console.log(items);
+            const activitiesStore = useActivitiesStore();
+            const activities = items;
+            activitiesStore.updateActivities(activities);
+         }
+         else{
+            console.log('activities');
+            const activitiesStore = useActivitiesStore();
+            activitiesStore.fetchLocation();
+         }
+      }
    }, 
    computed: {
       sortedActivitiesByDistance() {
@@ -207,6 +253,7 @@
    created() {
    },
    mounted() {
+      //this.updateActivitiesToPiniaStore()
    },
 }
 </script>
