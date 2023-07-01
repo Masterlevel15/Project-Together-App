@@ -3,6 +3,7 @@
 :categories="categories"/>
 <v-container class="">
    <h1 class="text-slate-50 text-4xl my-4 font-extrabold">Together</h1>
+   {{ user }}
    <!--<button class="floating-element">
       <a :href="route('activity.create')">
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-white w-8 h-8 mx-auto">
@@ -17,7 +18,7 @@
    <!-- Barre de rechercher Version ChatGPT-->
          <div class="search-container">
             <div class="search-input-container">
-               <input type="text" v-model="locality" placeholder="Entrez une localité"  @input="fetchSuggestions"
+               <input type="text" v-model="activity" placeholder="Entrez une localité"  @input="getActivitiesSuggestions(userInput)"
                @keydown.delete="handleDelete"
                class="rounded-lg bg-blue-gray w-64"/>
                <button @click="searchActivities">
@@ -27,9 +28,9 @@
             </div>
             <div v-if='suggestions'>
                <ul v-if="searchBarActive" class="absolute z-20 bg-white border border-gray-300 w-full mt-1 py-2 rounded-md shadow-md">
-                     <li v-for="suggestion in suggestions" :key="suggestion" class="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                     <li v-for="(suggestion, index) in suggestions" :key="index" class="px-4 py-2 cursor-pointer hover:bg-gray-100"
                      @click="selectSuggestion(suggestion)">{{ suggestion }}</li>
-                     <div v-if="suggestions.length ===  0 || locality.length < 3" class="flex justify-center items-center mx-auto h-12">
+                     <div v-if="suggestions.length ===  0 || activity.length < 3" class="flex justify-center items-center mx-auto h-12">
                            <i class="fa-solid fa-spinner fa-spin-pulse"></i>
                      </div>
                </ul>
@@ -59,12 +60,15 @@
       <div v-if="distanceFilterActive">
          <h1 style="" class="text-xl mb-8 text-white font-black">Activités à proximité</h1>
          <ActivityCard :loading="loading" :activities="(searchResult.length > 0 ? searchResult : sortedActivitiesByDistance)"
-         :activitiesSortedByFilter="activitiesSortedByFilterValues" />
+         :activitiesSortedByFilter="activitiesSortedByFilterValues"
+         :settingActive="settingActive"
+          />
       </div>
       <div v-if="dateFilterActive">
          <h1 style="" class="text-xl mb-8 text-white font-bold mt-8">Prochaines activités</h1>
          <ActivityCard :loading="loading" :activities=" sortedActivitiesByDate"
          :activitiesSortedByFilter="activitiesSortedByDate"
+         :settingActive="settingActive"
          />
       </div>
    </div>
@@ -122,6 +126,7 @@
       activities: Array,
       tests: Array,
       categories: Array,
+      user: String,
    },
    components: {
       ActivityFilter,
@@ -138,41 +143,66 @@
       dateFilterActive: true,
       distanceFilterActive: true,
       settingFilterActive: true,
+      activitiesSuggestions: [],
+      activitiesByTitle: [],
+      activitiesById: [],
+      activity: null,
+      suggestions: [],
+      selectSuggestionActive: false,
+      activitiesFromStore: null,
+      result: null,
+      settingActive: false,
    }),
    methods: {
-      searchActivities() {
-      // Envoyer une requête AJAX pour récupérer les activités à proximité
-      console.log(this.locality);
-      axios.get(`/api/search-activities/${this.locality}`)
-         .then(response => {
-            this.searchResult = response.data;
-         })
-         .catch(error => {
-            console.error(error);
-         });
-         console.log(this.searchResult);
-      },
-      async fetchSuggestions() {
-         if ((this.locality === null || this.locality === '') && this.locality.length > 3) {
-         // Si la valeur de l'input est vide, réinitialiser les suggestions à une valeur vide
-            this.suggestions = [];
-         } else {
-            await useActivitiesStore().fetchSuggestions(this.locality);
-         }
-         this.searchBarActive = true;
-         if(this.locality === '') {
-            this.searchBarActive = false;
+      searchActivities(suggestion) {
+         const activitiesStore = useActivitiesStore();
+         this.activitiesFromStore = activitiesStore.activities;
+         if(this.selectSuggestionActive){
+            
+            const indexActivityByTitle = this.activitiesByTitle.indexOf(suggestion);
+            const id = this.activitiesById[indexActivityByTitle];
+         
+         
+
+            this.activitiesFromStore.forEach((activity) => {
+               if(activity.title === suggestion && activity.id === id){
+                  console.log(activity);
+                  const distance = activity.distance;
+                  const id = activity.id;
+                  const route = `/activity/${id}?distance=${distance}`; // Remplacez par le chemin de votre route
+                  this.$inertia.visit(route);
+               }
+            });
+         }else{
+            const query = this.activity.toLowerCase().trim();
+            if (!query) {
+               this.result = this.activitiesFromStore;
+                // Aucune recherche
+            } else {
+               // Filtrer les activités dont le titre contient la recherche
+               this.result = this.activitiesFromStore.filter(activity =>
+                   activity.title.toLowerCase().startsWith(query)
+               );
+               
+            }
+            console.log(this.result);
+            activitiesStore.updateActivities(this.result);
+            const search = this.activity;
+            const route = `/activity/search/${search}`; // Remplacez par le chemin de votre route
+            this.$inertia.visit(route);
          }
       },
       selectSuggestion(suggestion) {
          console.log(suggestion);
-         this.locality = suggestion;
+         this.activity = suggestion;
          this.searchBarActive = false;
+         this.selectSuggestionActive = true;
+         this.searchActivities(suggestion);
       },
       handleDelete(event) {
          // Mettre à jour les suggestions lorsque l'utilisateur supprime des caractères de la recherche
             this.suggestions = [];
-            this.fetchSuggestions();
+            this.getActivitiesSuggestions();
       },
       initActivityFilter() {
          this.filterActive = true;
@@ -230,7 +260,33 @@
             const activitiesStore = useActivitiesStore();
             activitiesStore.fetchLocation();
          }
-      }
+      },
+      getActivitiesSuggestions() {
+         if(this.activitiesByTitle.length <= 0){
+            this.activitiesByTitle = Object.keys(this.activities);
+            this.activitiesById = Object.values(this.activities);
+         }
+         this.suggestions = this.activitiesByTitle.filter(titre => {
+            const inputChars = [...this.activity.toLowerCase()];
+            
+            const titreChars = [...titre.toLowerCase()];
+            let previousIndex = -1;
+            for (const char of inputChars) {
+            const currentIndex = titreChars.indexOf(char, previousIndex + 1);
+            if (currentIndex === -1) {
+               return false;
+            }
+            previousIndex = currentIndex;
+            }
+
+            return true;
+         });
+         console.log(this.suggestions);
+         this.searchBarActive = true;
+         if(this.activity.length < 2 || this.activity === '' ){
+            this.searchBarActive = false;
+         }
+      },
    }, 
    computed: {
       sortedActivitiesByDistance() {
@@ -246,11 +302,13 @@
          const activitiesStore = useActivitiesStore();
          return activitiesStore.loading;
       },
-      suggestions() {
+      suggestionsOld() {
          return useActivitiesStore().suggestions;
       },
    },
    created() {
+      const activitiesStore = useActivitiesStore();
+      activitiesStore.setUser(this.user);
    },
    mounted() {
       //this.updateActivitiesToPiniaStore()

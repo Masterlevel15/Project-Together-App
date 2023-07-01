@@ -23,6 +23,7 @@ module.exports = {
                 'blue-card-background': '#4D8798',
                 'green': '#00CA8A',
                 'green2':'#03CB8B',
+                'bandelette-details': '#4C8798',
                 
                 
                 

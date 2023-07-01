@@ -19,7 +19,6 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Redirect;
 
-
 class ActivityController extends Controller
 {
     //
@@ -100,6 +99,9 @@ class ActivityController extends Controller
                 array_push($activitiesSortByRange, $activity);
             }
         }
+
+        // ActivitiesStore::setActivities($this->activities);
+
         $this->sortedActivities = collect($activitiesSortByRange)->sortBy('distance')->toArray();
         
         if($request->input('distance') !== null){

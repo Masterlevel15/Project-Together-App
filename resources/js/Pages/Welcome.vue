@@ -5,6 +5,7 @@ import { defineProps } from 'vue';
 import { reactive, ref } from 'vue';
 import App from './App.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
+import { useActivitiesStore } from './../stores/activitiesStore';
 
 defineProps({
     canLogin: Boolean,
@@ -12,6 +13,7 @@ defineProps({
     laravelVersion: String,
     phpVersion: String,
     categories: Array,
+    activities: Array,
 });
 
 const data = reactive({
@@ -20,6 +22,10 @@ const data = reactive({
 
 const settingFilterState = (setting) => {
     data.isActive = setting;
+};
+
+const logout = () => {
+    router.post(route('logout'));
 };
 
 </script>
@@ -34,7 +40,7 @@ const settingFilterState = (setting) => {
                         API Tokens
                     </DropdownLink>
 
-                    <div class="border-t border-gray-200" />
+                    <div class="border-t border-white" />
 
                         <!-- Authentication -->
                         <Link href="/user/profile" method="get" as="button" style="margin-right: 4vh">{{ $page.props.auth.user.name }}</Link>
@@ -50,7 +56,7 @@ const settingFilterState = (setting) => {
             </template>
         </div>
         <!-- Ajout de la vue app dans la vue Welcome -->
-        <App @settingFilterActive="settingFilterState" :categories="this.categories" />
+        <App @settingFilterActive="settingFilterState" :categories="this.categories" :activities="this.activities" :user="$page.props.auth.user"/>
     </div>
 </template>
 

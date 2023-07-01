@@ -5,5 +5,6 @@ import Welcome from './Welcome.vue';
 </script>
 
 <template>
+<AppLayout />
     <Welcome />
 </template>

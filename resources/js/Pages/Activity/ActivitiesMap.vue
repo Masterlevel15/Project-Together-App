@@ -80,71 +80,8 @@ export default {
                 // Une fois que this.map est initialisé, résolvez la promesse
             resolve(this.map);
             });
-            /*
-            if (mapContainer) {
-                // Initialiser la carte Leaflet
-                this.map = L.map('map').setView([50.499527, 4.475402500000001], 13);
-                // Ajouter des tuiles (tiles) à la carte
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
-
-                this.addDistanceRange();
-
-                // Autres configurations et couches de la carte
-                this.activitiesSorted.forEach((activity) => {
-                    const marker = L.marker([activity.latitude, activity.longitude]).addTo(this.map);
-
-                    // Créer un élément de div pour le contenu du popup
-                    const popupContent = document.createElement('div');
-
-                    // Ajouter le titre de l'activité au contenu du popup
-                    const title = document.createElement('h1');
-                    title.textContent = activity.title;
-                    popupContent.appendChild(title);
-
-                    // Ajouter l'image de l'activité au contenu du popup
-                    const image = document.createElement('img');
-                    image.src = (activity.image !== null ? `assets/images/${activity.image}` : this.getImage(activity.image));
-                    popupContent.appendChild(image);
-
-                    // Ajouter un lien vers la route show de l'activité
-                    const link = document.createElement('a');
-                    link.href = route('activity.show', { id: activity.id });
-                    link.textContent = 'Voir les détails';
-                    popupContent.appendChild(link);
-
-                    // Associer le contenu du popup au marqueur
-                    marker.bindPopup(popupContent);
-                });
-                // this.addDistanceRange();
-            } else {
-                console.error('Map container not found.');
-            }
-            */
         },
-        /*
-        async getUserLocation() {
-             this.watchId =  navigator.geolocation.watchPosition(
-                (position) => {
-                    const { latitude, longitude } = position.coords;
-                    // Mettez à jour la position de l'utilisateur sur la carte
-                    // ...
-                    this.userPosition = position.coords;
-                    // this.addDistanceRange(position.coords);
-
-                    if (!this.userMarker) {
-                        this.userMarker = L.marker([latitude, longitude], { icon: this.customMarkerIcon }).addTo(this.map);
-                    } else {
-                        this.userMarker.setLatLng([latitude, longitude]);
-                    }
-                    return position.coords;
-                },
-                (error) => {
-                    console.error('Erreur lors de la récupération de la localisation de l\'utilisateur:', error);
-                }
-            );
-        },
-        */
-       addMarker(){
+        addMarker(){
            const activities = this.activitiesSorted;
            
            if(this.activitiesByDistance !== null){
@@ -214,7 +151,6 @@ export default {
                 );
             });
         },
-
         async addDistanceRange() {
             console.log('test');
             this.userPosition = await this.getUserLocation();
@@ -230,46 +166,6 @@ export default {
             this.distanceRangeLoaded = true
             // Ajoutez le cercle à la carte
             this.circle.addTo(this.map);
-        },
-        calculateBearing(lat1, lon1, lat2, lon2) {
-            const dLon = lon2 - lon1;
-            const y = Math.sin(dLon) * Math.cos(lat2);
-            const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
-            const bearing = Math.atan2(y, x);
-            const bearingInDegrees = (bearing * 180) / Math.PI;
-            return (bearingInDegrees + 360) % 360;
-        },
-        calculateDistancePerPixel(latitude, zoomLevel) {
-            const earthCircumference = 40075017; // Circumference of the Earth in meters
-            const tileSize = 256; // Size of a tile in pixels
-
-            const metersPerPixel = earthCircumference * Math.cos(latitude * Math.PI / 180) / (tileSize * Math.pow(2, zoomLevel));
-
-            return metersPerPixel;
-        },
-        calculateDestinationPoint(startingPoint, bearing, distance){
-            const earthRadius = 6371; // Radius of the Earth in kilometers
-
-            const lat1 = this.toRadians(startingPoint.latitude);
-            const lon1 = this.toRadians(startingPoint.longitude);
-            const angularDistance = distance / earthRadius;
-
-            const lat2 = Math.asin(Math.sin(lat1) * Math.cos(angularDistance) +
-                Math.cos(lat1) * Math.sin(angularDistance) * Math.cos(this.toRadians(bearing)));
-
-            const lon2 = lon1 + Math.atan2(Math.sin(this.toRadians(bearing)) * Math.sin(angularDistance) * Math.cos(lat1),
-                Math.cos(angularDistance) - Math.sin(lat1) * Math.sin(lat2));
-
-            return {
-                latitude: this.toDegrees(lat2),
-                longitude: this.toDegrees(lon2),
-            };
-        },
-        toRadians(degrees) {
-            return degrees * (Math.PI / 180);
-        },
-        toDegrees(radians) {
-            return radians * (180 / Math.PI);
         },
         fetchActivities(){
             const activitiesStore = useActivitiesStore();

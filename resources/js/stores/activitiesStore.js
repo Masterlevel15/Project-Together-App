@@ -5,7 +5,7 @@ import axios from 'axios';
 export const useActivitiesStore = defineStore({
   id: 'activities',
   state: () => ({
-    activities: [], // Liste des activités
+    activities: Array, // Liste des activités
     activitiesSortByFilter: Array,
     activitiesSortByDistance: [], // Liste des activités triées par distance
     activitiesValues: [], // Valeurs des activités
@@ -20,6 +20,7 @@ export const useActivitiesStore = defineStore({
     loading: false,
     distance: null,
     response: null,
+    user: Array,
   }),
   getters: {
     getActivitiesSortedByDistance() {
@@ -47,12 +48,21 @@ export const useActivitiesStore = defineStore({
     getActivities() {
       const storedActivities = localStorage.getItem('activities');
       this.activitiesSortByFilter = JSON.parse(storedActivities);
+      if(this.activitiesSortByFilter.length > 0){
+        this.loading = true;
+      }
+     
       return this.activitiesSortByFilter;
     },
     getDistance() {
       const storedDistance = localStorage.getItem('distance');
       this.distance = JSON.parse(storedDistance);
       return Number(this.distance);
+    },
+    getUser() {
+      const storedUser = localStorage.getItem('user');
+      this.user = JSON.parse(storedUser);
+      return this.user;
     }
   },
   actions: {
@@ -127,8 +137,11 @@ export const useActivitiesStore = defineStore({
         localStorage.setItem('distance', JSON.stringify(distance));
         this.distance = distance;
         return this.distance;
-        
-        
+      },
+      setUser(user){
+        console.log(user);
+        localStorage.setItem('user', JSON.stringify(user));
+        this.user = user;
       },
   },
   /*

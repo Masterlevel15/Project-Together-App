@@ -28,4 +28,12 @@ class Activity extends Model
     public function users() {
         return $this->belongsToMany(\App\Models\User::class, 'users_has_activities');
     }
+
+    public function ratings() {
+        return $this->hasMany(\App\Models\Rating::class, 'activity_id');
+    }
+
+    public function bookmarks() {
+        return $this->hasMany(\App\Models\Bookmark::class, 'activity_id');
+    }
 }

@@ -24,9 +24,15 @@ Route::get('/activities', [App\Http\Controllers\ActivityController::class, 'getA
 
 Route::get('/search-activities/{locality}', [App\Http\Controllers\ActivityController::class, 'searchActivities']);
 
+Route::post('/users/{user}/activities/{activity}/bookmark', [App\Http\Controllers\BookmarkController::class, 'showBookmark']);
+
 Route::post('/activity-filter', [App\Http\Controllers\ActivityController::class, 'searchActivitiesByFilter']);
 
 Route::post('/activity/store', [App\Http\Controllers\ActivityController::class, 'store']);
+
+Route::post('/ratings', [App\Http\Controllers\RatingController::class, 'store'])->name('ratings.store');
+
+Route::post('/bookmark', [App\Http\Controllers\BookmarkController::class, 'store'])->name('bookmark.store');
 
 Route::group(['prefix' => 'api'], function () {
     // Vos routes API ici

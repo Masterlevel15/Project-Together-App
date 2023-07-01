@@ -27,7 +27,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'pseudo',
     ];
 
     /**
@@ -74,5 +73,15 @@ class User extends Authenticatable
 
     public function city() {
         return $this->belongsTo(\App\Models\City::class);
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(\App\Models\Rating::class, 'user_id');
+    }
+
+    public function bookmarks()
+    {
+        return $this->belongsToMany(\App\Models\Activity::class, 'bookmarks');
     }
 }
