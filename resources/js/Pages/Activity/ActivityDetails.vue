@@ -64,9 +64,9 @@
           <div id="map" class="h-[50vh] w-full z-[9] rounded-lg border-2 border-white"></div>
         </div>
         <!--fin Map-->
-        <div class="flex-col">
+        <div class="flex-col space-y-1">
           <div class="text-white font-semibold pb-4">Organisé par</div>
-          <div style="width: 8vh; height: 8vh;  border-radius: 9999px; background: red; position: relative; background-image: url('https://cdn.vuetifyjs.com/images/cards/docks.jpg'); background-size: cover;" class="text-after ml-6">
+          <div style="width: 8vh; height: 8vh;  border-radius: 9999px; background: red; position: relative; background-image: url('https://cdn.vuetifyjs.com/images/cards/docks.jpg'); background-size: cover;" class="text-after ml-6 mb-5">
           </div>
           <a @click="promoterRatingActive= !promoterRatingActive" class="text-white font-extrabold pt-4 pb-1 underline focus::no-underline">{{ activity[0].userName }}</a>
           <div class="flex items-center pb-12">
@@ -130,23 +130,25 @@ export default {
    },
    methods: {
      submitRating() {
-       console.log($page.props.auth.user);
+       console.log(this.user.id);
         const ratingData = {
           activity_id:this.activity[0].activityID,
           rating: this.$refs.starRating.selectedRating,
           promoter_id: this.activity[0].userID,
+          user_id: this.user.id,
         };
-      /*
+
         axios.post('/api/ratings', ratingData)
           .then(response => {
             // Succès de la requête, gérer la réponse si nécessaire
-            console.log(response.data);
+            console.log(response.data.averageRating);
+            this.getStarRating(response.data.averageRating);
+            this.getStarNotRating(response.data.averageRating);
           })
           .catch(error => {
           // Erreur de la requête, gérer l'erreur si nécessaire
           console.error(error);
         });
-      */
 
       },
      getStarRating(userRate) {

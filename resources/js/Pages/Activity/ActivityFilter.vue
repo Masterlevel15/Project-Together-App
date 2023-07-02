@@ -3,9 +3,13 @@
         <div class=" fixed top-0 left-0 right-0 bottom-0 z-50 bg-gray-900 bg-slate-200 flex justify-center items-center" >
                 <div class="fixed top-0 h-16 w-full bg-blue-light2">
                         <div class="flex justify-between items-center h-16 px-4">
-                                <Icon icon="carbon:arrow-left" 
-                                class="text-3xl text-slate-50"/>
-                                <Icon icon="fa6-solid:circle-xmark" class="text-3xl text-slate-50" />
+                                <a :href="route('home')">
+                                        <Icon icon="carbon:arrow-left"
+                                        class="text-3xl text-slate-50"/>
+                                </a>
+                                <a @click="resetSettings">
+                                        <Icon icon="fa6-solid:circle-xmark" class="text-3xl text-slate-50" />
+                                </a>
                         </div>
                 </div>
                 <!-- -->
@@ -35,7 +39,7 @@
                                 </div>
                         </div>
                         <!-- -->
-                        <RangeSlider @getDistance="getDistance" class="mt-16"/>
+                        <RangeSlider @getDistance="getDistance" class="mt-16" :reset="reset"/>
                         <!-- -->
                         <hr class="h-px my-8 bg-gray-100 border-0 dark:bg-gray-300">
                         <!-- -->   
@@ -94,6 +98,7 @@ export default {
                         searchResult: [],
                         distance: null,
                         categoriesName: [],
+                        reset: false,
                 };
         },
         props:{
@@ -189,7 +194,15 @@ export default {
                         this.categories.forEach((category) => {
                                 this.categoriesName.push(category['name']);
                         })
-                }
+                },
+                resetSettings() {
+                        this.activeCategories = [];
+                        this.activeSortingSettings = [];
+                        this.locality = null;
+                        this.searchResult = [];
+                        this.distance = 0;
+                        this.reset = true;  
+                },
         },
         created() {
                 this.getCategoriesName();

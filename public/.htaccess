@@ -3,6 +3,9 @@
         Options -MultiViews -Indexes
     </IfModule>
 
+    #ajouté le 2juillet 2023
+    php_value upload_max_filesize 10000M
+
     RewriteEngine On
 
     # Handle Authorization Header

@@ -25,6 +25,7 @@ class RatingController extends Controller
         $rating->activity_id = $request->input('activity_id');
         $rating->rating = $request->input('rating');
         $rating->promoter_id = $request->input('promoter_id');
+        $rating->user_id = $request->input('user_id');
         
         // Ajouter d'autres champs si nécessaire
 
@@ -36,9 +37,9 @@ class RatingController extends Controller
             $averageRating = Rating::where('promoter_id', $request->input('promoter_id'))
                 ->avg('rating');
         }
-        User::where('id', $request->input('promoter_id'))->update(['rate' => $averageRating]);
+        User::where('id', $request->input('promoter_id'))->update(['rate' => intval($averageRating)]);
 
         // Répondre avec les données du modèle Rating ou un message de succès
-        return response()->json(['message' => 'Note enregistrée avec succès', 'averageRating' => $averageRating], 201);
+        return response()->json(['message' => 'Note enregistrée avec succès', 'averageRating' => intval($averageRating)], 201);
     }
 }

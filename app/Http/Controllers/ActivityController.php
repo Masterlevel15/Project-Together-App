@@ -14,10 +14,13 @@ use App\Models\City;
 use App\Models\Country;
 use App\Models\User;
 use App\Models\UserActivity;
+use App\Models\Bookmark;
 use Inertia\Inertia;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Redirect;
+use App\Pinia\ActivitiesStore;
+use Illuminate\Support\Facades\Storage;
 
 class ActivityController extends Controller
 {
@@ -69,11 +72,23 @@ class ActivityController extends Controller
     }
 
     public function findActivitiesByCategory(int $id) {
-        $activitiesByCategory = Activity::select("*", "activities.title as activityTitle","users.name as userName", "activities.id as activityID", "users.id as userID", "users.rate as userRate", "cities.name as cityName", "users.city_id as userCityID", "activities.city_id as activityCityID", "activities.country_id as activityCountryID", "users.country_id as userCountryID", "countries.name as activityCountryName", "categories.name as activityCategoryName")
-        ->join("users", "activities.promoter_id", "=", "users.id")
-        ->join("cities", "activities.city_id", "=", "cities.id")
-        ->join("countries", "countries.id", "=", "activities.country_id")->join("categories", "categories.id", "=", "activities.category_id")->where('category_id', $id)->get();
-        return Inertia::render('Activity/ActivitiesByCategory', ['activities'=> $activitiesByCategory]);
+        $activitiesByCategory = Activity::with('promoter', 'category', 'country', 'city', 'users')->where('category_id', $id)->get();
+
+        $latitude = request()->query('coords')['latitude'];
+        $longitude = request()->query('coords')['longitude'];
+        
+        $activitiesWithDistance = [];
+        foreach($activitiesByCategory as $activity) {
+            $latitudeFromDB =  $activity->latitude;
+            $longitudeFromDB =  $activity->longitude;
+            
+           
+            self::distanceBetweenCoordinates(['latitude' => $latitude, 'longitude' => $longitude], ['latitude' => $latitudeFromDB,'longitude' => $longitudeFromDB]);   
+            $activity['distance'] = $this->distance;
+            array_push($activitiesWithDistance, $activity);
+        }
+
+        return Inertia::render('Activity/ActivityBySetting', ['activitiesBySetting'=> $activitiesWithDistance, 'title' => 'catégorie']);
     }
     public function sortActivitiesWithDistances(Request $request) {
         $latitude = $request->input('latitude');
@@ -204,6 +219,8 @@ class ActivityController extends Controller
         */
     }
     public function store(Request $request) {
+        ini_set('display_errors', 1);
+        error_reporting(E_ALL);
         // dd($request->file('file')->getClientOriginalExtension());
         
         //INSERT DATABASE
@@ -278,6 +295,13 @@ class ActivityController extends Controller
         if($request->file('file') !== null) {
             $imageName = time().".".$request->file('file')->getClientOriginalExtension();
 
+            //Stockage fichier Hébergement (public_html)
+            $parentDirectory = realpath(dirname(__DIR__) . '/../../..');
+            $filePath = $parentDirectory . '/public_html/assets/images';
+
+            $request->file('file')->move($filePath, $imageName);
+
+            //Stockage local
             $request->file('file')->move(public_path('').'/assets/images', $imageName);
             
             $activity->image =  $imageName;
@@ -391,5 +415,33 @@ class ActivityController extends Controller
             return true;        
         }
         return $result;
+    }
+    public function findActivitiesBookmarkByUser() {
+        $user_id = (int)request()->query('id');
+        $latitude = request()->query('coords')['latitude'];
+        $longitude = request()->query('coords')['longitude'];
+        
+        $bookmarks_id = Bookmark::where('user_id', $user_id)->where('active', true)->pluck('activity_id');
+
+        $activities = [];
+        foreach($bookmarks_id as $bookmark_id){
+            
+            $activity = Activity::where('id', $bookmark_id)->with('promoter', 'category', 'country', 'city', 'users')->get();
+            array_push($activities, $activity);
+        }
+        $activities = $activities[0]->toArray();
+        $activitiesWithDistance = [];
+        foreach($activities as $activity) {
+            $latitudeFromDB =  $activity['latitude'];
+            $longitudeFromDB =  $activity['longitude'];
+           
+            self::distanceBetweenCoordinates(['latitude' => $latitude, 'longitude' => $longitude], ['latitude' => $latitudeFromDB,'longitude' => $longitudeFromDB]);   
+            $activity['distance'] = $this->distance;
+            array_push($activitiesWithDistance, $activity);
+        }
+
+
+        return Inertia::render('Activity/ActivityBySetting', ['activitiesBySetting'=> $activitiesWithDistance, 'title' => 'bookmark']);
+        //return $activitiesWithDistance; 
     }
 }

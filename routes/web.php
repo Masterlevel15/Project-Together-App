@@ -47,13 +47,24 @@ Route::get('/activity/category/{id}', [\App\Http\Controllers\ActivityController:
 
 //Route Activités par recherche
 Route::get('/activity/search/{search}', function () {
-    return Inertia::render('Activity/ActivityBySetting');
+    return Inertia::render('Activity/ActivityBySetting', [
+        'title' => 'recherche',
+    ]);
 })->name('activity.activitiesBySearch');
+
+//Route des activités enregistre par l'utilisateurz
+Route::get('/user/activity/bookmarks', [\App\Http\Controllers\ActivityController::class, 'findActivitiesBookmarkByUser'])->name('user.bookmarks');
 
 //Route vers la map avec les activités
 Route::get('/map', function () {
-    return Inertia::render('Activity/ActivitiesMap', ['activities' => App\Models\Activity::all()]);
+    return Inertia::render('Activity/ActivitiesMap');
 })->name('activity.map');
+
+//Route Easter Egg
+//Route des activités enregistre par l'utilisateur
+Route::get('/easter-egg', function () {
+    return Inertia::render('EasterEgg/DonutAnimation');
+})->name('easter.egg');
 
 // Route lorsque l'utilisateur est connecté
 Route::middleware([

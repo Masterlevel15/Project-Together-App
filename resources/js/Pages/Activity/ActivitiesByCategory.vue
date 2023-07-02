@@ -1,11 +1,10 @@
 <template>
-<v-container class="dark:bg-slate-500 height">
+<v-container class="bg-gradient-to-b from-blue-light to-blue-dark min-h-screen flex-col overflow-hidden">
     <a :href="route('home')">
-        <h1 class="text-white text-4xl my-4">Together</h1>
+        <h1 class="text-slate-50 text-4xl my-4 mb-16 text-center font-extrabold">Activités par {{title}}</h1>   
     </a>
-    <div class="mr-8">
         <Card :activities="activities" />
-    </div>
+    
 </v-container>
 </template>
 
@@ -19,6 +18,7 @@ export default {
    }),
     props: {
         activities: Array,
+        title: String,
     },
     components: {
       Card,  

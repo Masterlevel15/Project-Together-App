@@ -24,7 +24,10 @@ import { Icon } from '@iconify/vue';
     }),
     components: {
 		Icon,
-	},
+	  },
+    props: {
+      reset: Boolean,
+    },
     computed: {
     },
 
@@ -37,6 +40,11 @@ import { Icon } from '@iconify/vue';
           this.$emit('getDistance', this.distance);
       },
     },
+    created() {
+      if(this.reset){
+        this.distance = 0;
+      }
+    }
   }
 </script>
 <style>

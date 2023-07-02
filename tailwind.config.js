@@ -21,6 +21,7 @@ module.exports = {
                 'blue-dark2': '#4B8799',
                 'blue-gray': '#4C8798',
                 'blue-card-background': '#4D8798',
+                'blue-input-form': '#D1E7E8',
                 'green': '#00CA8A',
                 'green2':'#03CB8B',
                 'bandelette-details': '#4C8798',

@@ -1,8 +1,8 @@
 <template>
-    <div class="relative w-full h-screen">
+    <Loader v-if="isLoading" class="fixed inset-0 flex items-center justify-center z-50 bg-gradient-to-b from-blue-light to-blue-dark"/>
+    <div class="relative w-full h-screen" v-else>
         <div id="map" class="w-full h-full z-10"></div>
-
-        <div id="distance-slider-container" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white p-4 rounded-lg z-50" v-if="distanceRangeLoaded">
+        <div id="distance-slider-container" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white p-4 rounded-lg z-50 mb-16" v-if="distanceRangeLoaded">
              <div v-show="showTooltip" class="fixed left-1/2 -translate-x-1/2 -top-full transform-gpu -translate-y-2 bg-white p-2 rounded shadow">
             {{distance}} Km
             </div>
@@ -10,6 +10,8 @@
             @input="updateActivitiesByDistanceRange"
             v-model="distance">
         </div>
+        <MenuNavigationVue class="z-10"/>
+        
     </div>
 </template>
 
@@ -20,6 +22,8 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { useActivitiesStore } from '../../stores/activitiesStore';
 import 'leaflet-measure';
+import MenuNavigationVue from '../../Components/MenuNavigation.vue';
+import Loader from '../../Components/Loader.vue';
 
 
 export default {
@@ -44,11 +48,20 @@ export default {
             markers: [],
             activities: null,
             circle: null,
+            position: null,
+            latitude: null,
+            longitude: null,
+            isLoading: true,
             // Autres données du composant...
         };
     },
     props:{
       activities: Array,
+      location: Array,
+    },
+    components: {
+        MenuNavigationVue,
+        Loader,
     },
     methods: {
         getImage(image) {
@@ -62,14 +75,38 @@ export default {
                 // console.log(activity.image);
             }
         },
+        async getCurrentPosition(){
+            try {
+                const position = await new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                    this.position = position;
+                    this.latitude = position.coords.latitude;
+                    this.longitude = position.coords.longitude;
+                    resolve(position);
+                    this.isLoading = false;
+                    },
+                    (error) => {
+                    reject(error);
+                    }
+                );
+                });
+                // console.log('Position:', position);
+                return position;
+            } catch (error) {
+                console.error('Error fetching position:', error);
+                throw error;
+            }
+        },
         async initMap() {
+            const positon = await this.getCurrentPosition();
             const mapContainer = document.getElementById('map');
             return new Promise((resolve, reject) => {
             // Code pour initialiser this.map
             // ...
             if (mapContainer) {
                 // Initialiser la carte Leaflet
-                this.map = L.map('map').setView([50.499527, 4.475402500000001], 13);
+                this.map = L.map('map').setView([positon.coords.latitude, positon.coords.longitude], 13);
                 // Ajouter des tuiles (tiles) à la carte
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
 
